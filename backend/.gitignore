@@ -1,0 +1,60 @@
+##################################
+# Maven / Java
+##################################
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.properties
+
+##################################
+# Spring Boot
+##################################
+backend/src/main/resources/application.properties
+*.log
+
+##################################
+# IDE - IntelliJ IDEA
+##################################
+.idea/
+*.iws
+*.iml
+*.ipr
+
+##################################
+# IDE - Eclipse / STS
+##################################
+.classpath
+.project
+.settings/
+.apt_generated
+.factorypath
+.springBeans
+.sts4-cache/
+
+##################################
+# IDE - VS Code
+##################################
+.vscode/
+
+##################################
+# Build folders
+##################################
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+##################################
+# OS generated files
+##################################
+.DS_Store
+Thumbs.db
+
+##################################
+# Node reminder (future frontend)
+##################################
+node_modules/
+
+##################################
+# Environment files
+##################################
+.env
+.env.*
