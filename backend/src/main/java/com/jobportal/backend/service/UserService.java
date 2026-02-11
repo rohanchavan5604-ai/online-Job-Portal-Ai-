@@ -1,9 +1,11 @@
 package com.jobportal.backend.service;
 
-import com.jobportal.backend.entity.User;
-import java.util.List;
+import com.jobportal.backend.dto.LoginRequest;
+import com.jobportal.backend.dto.RegisterRequest;
 
 public interface UserService {
-    User registerUser(User user);
-    List<User> getAllUsers();
+
+    String register(RegisterRequest request);
+
+    String login(LoginRequest request);
 }

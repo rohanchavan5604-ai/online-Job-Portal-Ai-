@@ -1,13 +1,13 @@
 package com.jobportal.backend.controller;
 
-import com.jobportal.backend.entity.User;
+import com.jobportal.backend.dto.LoginRequest;
+import com.jobportal.backend.dto.RegisterRequest;
 import com.jobportal.backend.service.UserService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/auth")
 @CrossOrigin("*")
 public class UserController {
 
@@ -18,12 +18,12 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
-        return userService.registerUser(user);
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(userService.register(request));
     }
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(userService.login(request));
     }
 }
