@@ -44,19 +44,23 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String email = jwtService.extractEmail(token);
+        String role = jwtService.extractRole(token);
 
-        UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(
-                        email,
-                        null,
-                        List.of(new SimpleGrantedAuthority("ROLE_USER"))
-                );
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-        authToken.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
-        );
+            UsernamePasswordAuthenticationToken authToken =
+                    new UsernamePasswordAuthenticationToken(
+                            email,
+                            null,
+                            List.of(new SimpleGrantedAuthority("ROLE_" + role))
+                    );
 
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+            authToken.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request)
+            );
+
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
 
         filterChain.doFilter(request, response);
     }

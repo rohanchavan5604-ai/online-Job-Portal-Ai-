@@ -41,19 +41,23 @@ public class UserServiceImpl implements UserService {
         return "User registered successfully";
     }
 
-    @Override
-    public String login(LoginRequest request) {
+@Override
+public String login(LoginRequest request) {
 
-        User user = userRepository
-                .findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+    User user = userRepository
+            .findByEmail(request.getEmail())
+            .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if (!passwordEncoder.matches(
-                request.getPassword(),
-                user.getPassword())) {
-            throw new RuntimeException("Invalid password");
-        }
-
-        return jwtService.generateToken(user.getEmail());
+    if (!passwordEncoder.matches(
+            request.getPassword(),
+            user.getPassword())) {
+        throw new RuntimeException("Invalid password");
     }
+
+    return jwtService.generateToken(
+            user.getEmail(),
+            user.getRole()
+    );
+}
+
 }
