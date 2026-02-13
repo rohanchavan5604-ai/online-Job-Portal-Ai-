@@ -58,3 +58,10 @@ node_modules/
 ##################################
 .env
 .env.*
+target/
+.idea/
+.vscode/
+*.log
+*.class
+node_modules/
+.env
