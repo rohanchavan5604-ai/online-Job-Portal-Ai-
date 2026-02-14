@@ -1,5 +1,6 @@
 package com.jobportal.backend.controller;
 
+import com.jobportal.backend.dto.UserResponse;
 import com.jobportal.backend.entity.User;
 import com.jobportal.backend.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,16 +23,31 @@ public class UsersController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll()
+                .stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getFullName(),
+                        user.getEmail(),
+                        user.getRole()
+                ))
+                .toList();
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
+    public UserResponse createUser(@RequestBody User user) {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("USER");
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        return new UserResponse(
+                savedUser.getId(),
+                savedUser.getFullName(),
+                savedUser.getEmail(),
+                savedUser.getRole()
+        );
     }
 }

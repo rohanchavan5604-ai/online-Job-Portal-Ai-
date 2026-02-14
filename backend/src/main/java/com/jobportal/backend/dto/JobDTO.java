@@ -1,38 +1,28 @@
-package com.jobportal.backend.entity;
+package com.jobportal.backend.dto;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-@Entity
-@Table(name = "jobs")
-public class Job {
+public class JobDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 150)
+    @NotBlank
+    @Size(max = 150)
     private String title;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @NotBlank
     private String description;
 
-    @Column(nullable = false, length = 150)
+    @NotBlank
+    @Size(max = 150)
     private String company;
 
-    @Column(nullable = false, length = 100)
+    @NotBlank
+    @Size(max = 100)
     private String location;
 
-    @Column
     private Double salary;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
-    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -51,6 +41,4 @@ public class Job {
 
     public Double getSalary() { return salary; }
     public void setSalary(Double salary) { this.salary = salary; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
 }

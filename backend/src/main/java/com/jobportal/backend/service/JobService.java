@@ -1,17 +1,17 @@
 package com.jobportal.backend.service;
 
-import com.jobportal.backend.entity.Job;
+import com.jobportal.backend.dto.JobDTO;
 import java.util.List;
 
 public interface JobService {
 
-    Job createJob(Job job);
+    JobDTO createJob(JobDTO jobDTO);
 
-    List<Job> getAllJobs();
+    List<JobDTO> getAllJobs();
 
-    Job getJobById(Long id);
+    JobDTO getJobById(Long id);
 
-    Job updateJob(Long id, Job job);
+    JobDTO updateJob(Long id, JobDTO jobDTO);
 
     void deleteJob(Long id);
 }

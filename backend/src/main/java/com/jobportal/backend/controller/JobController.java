@@ -1,7 +1,9 @@
 package com.jobportal.backend.controller;
 
-import com.jobportal.backend.entity.Job;
+import com.jobportal.backend.dto.JobDTO;
 import com.jobportal.backend.service.JobService;
+import jakarta.validation.Valid;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,25 +20,29 @@ public class JobController {
     }
 
     @GetMapping
-    public List<Job> getAllJobs() {
+    public List<JobDTO> getAllJobs() {
         return jobService.getAllJobs();
     }
 
     @GetMapping("/{id}")
-    public Job getJobById(@PathVariable Long id) {
+    public JobDTO getJobById(@PathVariable Long id) {
         return jobService.getJobById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public Job createJob(@RequestBody Job job) {
-        return jobService.createJob(job);
+    public JobDTO createJob(@Valid @RequestBody JobDTO jobDTO) {
+        return jobService.createJob(jobDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public Job updateJob(@PathVariable Long id, @RequestBody Job jobDetails) {
-        return jobService.updateJob(id, jobDetails);
+    public JobDTO updateJob(@PathVariable Long id,
+                            @Valid @RequestBody JobDTO jobDTO) {
+        return jobService.updateJob(id, jobDTO);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public String deleteJob(@PathVariable Long id) {
         jobService.deleteJob(id);
