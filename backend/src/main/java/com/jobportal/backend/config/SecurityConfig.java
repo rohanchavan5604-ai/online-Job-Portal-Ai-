@@ -44,15 +44,30 @@ public class SecurityConfig {
             )
             .authenticationProvider(authenticationProvider)
             .authorizeHttpRequests(auth -> auth
- 
+
+                // AUTH ENDPOINTS
                 .requestMatchers("/api/auth/**").permitAll()
- 
+
+                // JOB ENDPOINTS
                 .requestMatchers(HttpMethod.GET, "/api/jobs/**").permitAll()
-                .requestMatchers("/api/jobs/**").hasRole("ADMIN")
- 
-                .requestMatchers("/api/applications/my").hasRole("USER")
-                .requestMatchers("/api/applications/**").hasRole("ADMIN")
- 
+                .requestMatchers(HttpMethod.POST, "/api/jobs/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/jobs/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/jobs/**").hasRole("ADMIN")
+
+                // APPLICATION ENDPOINTS
+
+                // USER - Apply Job
+                .requestMatchers(HttpMethod.POST, "/api/applications/*").hasRole("USER")
+
+                // USER - View Own Applications
+                .requestMatchers(HttpMethod.GET, "/api/applications/my").hasRole("USER")
+
+                // ADMIN - View All Applications
+                .requestMatchers(HttpMethod.GET, "/api/applications").hasRole("ADMIN")
+
+                // ADMIN - Update Application Status
+                .requestMatchers(HttpMethod.PUT, "/api/applications/**").hasRole("ADMIN")
+
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter,

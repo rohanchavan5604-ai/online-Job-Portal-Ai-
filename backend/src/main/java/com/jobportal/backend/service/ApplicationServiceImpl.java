@@ -7,13 +7,14 @@ import com.jobportal.backend.entity.User;
 import com.jobportal.backend.repository.ApplicationRepository;
 import com.jobportal.backend.repository.JobRepository;
 import com.jobportal.backend.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional
 public class ApplicationServiceImpl implements ApplicationService {
 
     private final ApplicationRepository applicationRepository;
@@ -39,12 +40,13 @@ public class ApplicationServiceImpl implements ApplicationService {
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new RuntimeException("Job not found"));
 
-        Application application = new Application(
-                user,
-                job,
-                ApplicationStatus.APPLIED,
-                LocalDateTime.now()
-        );
+        if (applicationRepository.existsByUserAndJob(user, job)) {
+            throw new RuntimeException("You have already applied for this job");
+        }
+
+        Application application = new Application();
+        application.setUser(user);
+        application.setJob(job);
 
         return applicationRepository.save(application);
     }
