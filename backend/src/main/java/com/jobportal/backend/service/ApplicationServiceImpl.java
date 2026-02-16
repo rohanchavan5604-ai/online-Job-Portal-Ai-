@@ -4,6 +4,7 @@ import com.jobportal.backend.entity.Application;
 import com.jobportal.backend.entity.ApplicationStatus;
 import com.jobportal.backend.entity.Job;
 import com.jobportal.backend.entity.User;
+import com.jobportal.backend.exception.ResourceNotFoundException;
 import com.jobportal.backend.repository.ApplicationRepository;
 import com.jobportal.backend.repository.JobRepository;
 import com.jobportal.backend.repository.UserRepository;
@@ -35,10 +36,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         Job job = jobRepository.findById(jobId)
-                .orElseThrow(() -> new RuntimeException("Job not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Job not found"));
 
         if (applicationRepository.existsByUserAndJob(user, job)) {
             throw new RuntimeException("You have already applied for this job");
@@ -47,6 +48,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = new Application();
         application.setUser(user);
         application.setJob(job);
+        application.setStatus(ApplicationStatus.APPLIED);
 
         return applicationRepository.save(application);
     }
@@ -62,7 +64,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         return applicationRepository.findByUser(user);
     }
@@ -71,7 +73,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public Application updateStatus(Long applicationId, ApplicationStatus status) {
 
         Application application = applicationRepository.findById(applicationId)
-                .orElseThrow(() -> new RuntimeException("Application not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Application not found"));
 
         application.setStatus(status);
 

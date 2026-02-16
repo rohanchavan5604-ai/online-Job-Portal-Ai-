@@ -37,41 +37,42 @@ public class SecurityConfig {
             AuthenticationProvider authenticationProvider) throws Exception {
 
         http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> {})
-            .sessionManagement(session ->
-                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .authenticationProvider(authenticationProvider)
-            .authorizeHttpRequests(auth -> auth
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> {})
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider)
+                .authorizeHttpRequests(auth -> auth
 
-                // AUTH ENDPOINTS
-                .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers(
+              "/",
+            "/index.html",
+            "/login.html",
+            "/register.html",
+            "/jobs.html",
+            "/my-applications.html",
+            "/css/**",
+            "/js/**"
+            ).permitAll()
 
-                // JOB ENDPOINTS
-                .requestMatchers(HttpMethod.GET, "/api/jobs/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/jobs/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/jobs/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/jobs/**").hasRole("ADMIN")
+                        .requestMatchers("/api/auth/**").permitAll()
 
-                // APPLICATION ENDPOINTS
+                        .requestMatchers(HttpMethod.GET, "/api/jobs/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/jobs/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/jobs/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/jobs/**").hasRole("ADMIN")
 
-                // USER - Apply Job
-                .requestMatchers(HttpMethod.POST, "/api/applications/*").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/api/applications/**").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/api/applications/my").hasRole("USER")
 
-                // USER - View Own Applications
-                .requestMatchers(HttpMethod.GET, "/api/applications/my").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/api/applications").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/applications/**").hasRole("ADMIN")
 
-                // ADMIN - View All Applications
-                .requestMatchers(HttpMethod.GET, "/api/applications").hasRole("ADMIN")
-
-                // ADMIN - Update Application Status
-                .requestMatchers(HttpMethod.PUT, "/api/applications/**").hasRole("ADMIN")
-
-                .anyRequest().authenticated()
-            )
-            .addFilterBefore(jwtAuthFilter,
-                UsernamePasswordAuthenticationFilter.class);
+                        .anyRequest().authenticated()
+                )
+                .addFilterBefore(jwtAuthFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
