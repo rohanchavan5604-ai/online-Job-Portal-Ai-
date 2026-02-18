@@ -2,6 +2,7 @@ package com.jobportal.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 public class JobDTO {
 
@@ -24,6 +25,8 @@ public class JobDTO {
 
     private Double salary;
 
+    private LocalDateTime createdAt;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -41,4 +44,7 @@ public class JobDTO {
 
     public Double getSalary() { return salary; }
     public void setSalary(Double salary) { this.salary = salary; }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

@@ -3,6 +3,8 @@ package com.jobportal.backend.service;
 import com.jobportal.backend.dto.JobDTO;
 import com.jobportal.backend.entity.Job;
 import com.jobportal.backend.repository.JobRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,8 +22,7 @@ public class JobServiceImpl implements JobService {
     @Override
     public JobDTO createJob(JobDTO jobDTO) {
         Job job = mapToEntity(jobDTO);
-        Job savedJob = jobRepository.save(job);
-        return mapToDTO(savedJob);
+        return mapToDTO(jobRepository.save(job));
     }
 
     @Override
@@ -50,9 +51,7 @@ public class JobServiceImpl implements JobService {
         existingJob.setLocation(jobDTO.getLocation());
         existingJob.setSalary(jobDTO.getSalary());
 
-        Job updatedJob = jobRepository.save(existingJob);
-
-        return mapToDTO(updatedJob);
+        return mapToDTO(jobRepository.save(existingJob));
     }
 
     @Override
@@ -63,6 +62,25 @@ public class JobServiceImpl implements JobService {
         jobRepository.deleteById(id);
     }
 
+    @Override
+    public Page<JobDTO> searchJobs(String title,
+                                   String location,
+                                   Double minSalary,
+                                   Pageable pageable) {
+
+        if (title != null && title.trim().isEmpty()) {
+            title = null;
+        }
+
+        if (location != null && location.trim().isEmpty()) {
+            location = null;
+        }
+
+        return jobRepository
+                .searchJobs(title, location, minSalary, pageable)
+                .map(this::mapToDTO);
+    }
+
     private JobDTO mapToDTO(Job job) {
         JobDTO dto = new JobDTO();
         dto.setId(job.getId());
@@ -71,6 +89,7 @@ public class JobServiceImpl implements JobService {
         dto.setCompany(job.getCompany());
         dto.setLocation(job.getLocation());
         dto.setSalary(job.getSalary());
+        dto.setCreatedAt(job.getCreatedAt());
         return dto;
     }
 
