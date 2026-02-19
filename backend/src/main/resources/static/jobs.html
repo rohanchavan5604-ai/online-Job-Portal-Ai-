@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Jobs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
 <div class="navbar">
-    <h2>Job Portal</h2>
-    <div>
-        <button onclick="goToMyApplications()">My Applications</button>
-        <button onclick="logout()">Logout</button>
+    <h2 class="logo">Job Portal</h2>
+    <div class="nav-links">
+        <a href="#" onclick="goToMyApplications()">My Applications</a>
+        <a href="#" onclick="logout()">Logout</a>
     </div>
 </div>
 
-<div class="container">
-    <h3>Available Jobs</h3>
+<section class="job-search">
+
+    <h2>Search Jobs</h2>
+
+    <div class="search-container">
+        <input type="text" id="searchTitle" placeholder="Job Title">
+        <input type="text" id="searchLocation" placeholder="Location">
+        <select id="sortOption">
+            <option value="latest">Latest</option>
+            <option value="salaryHigh">Salary High → Low</option>
+            <option value="salaryLow">Salary Low → High</option>
+        </select>
+        <button onclick="searchJobs()">Search</button>
+    </div>
+
     <div id="jobsContainer"></div>
-</div>
+
+</section>
 
 <script src="js/app.js"></script>
 </body>

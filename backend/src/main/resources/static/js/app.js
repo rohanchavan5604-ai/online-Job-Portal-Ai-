@@ -1,12 +1,10 @@
-const BASE_URL = "http://localhost:8080";
-
 async function login() {
     const email = document.getElementById("loginEmail")?.value;
     const password = document.getElementById("loginPassword")?.value;
     const message = document.getElementById("loginMessage");
 
     try {
-        const response = await fetch(`${BASE_URL}/api/auth/login`, {
+        const response = await fetch("/api/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ email, password })
@@ -31,7 +29,7 @@ async function register() {
     const message = document.getElementById("registerMessage");
 
     try {
-        const response = await fetch(`${BASE_URL}/api/auth/register`, {
+        const response = await fetch("/api/auth/register", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, email, password, role: "USER" })
@@ -54,26 +52,80 @@ async function loadJobs() {
     if (!container) return;
 
     try {
-        const response = await fetch(`${BASE_URL}/api/jobs`);
+        const response = await fetch("/api/jobs");
         const jobs = await response.json();
 
         container.innerHTML = "";
 
         jobs.forEach(job => {
-            const div = document.createElement("div");
-            div.className = "job-card";
-            div.innerHTML = `
-                <h3>${job.title}</h3>
-                <p>${job.description}</p>
-                <p><b>Company:</b> ${job.company}</p>
-                <p><b>Location:</b> ${job.location}</p>
-                <button onclick="applyJob(${job.id})">Apply</button>
+            container.innerHTML += `
+                <div class="job-card">
+                    <h3>${job.title}</h3>
+                    <p>${job.description}</p>
+                    <p><b>Company:</b> ${job.company}</p>
+                    <p><b>Location:</b> ${job.location}</p>
+                    <p><b>Salary:</b> ₹${job.salary}</p>
+                    <button onclick="applyJob(${job.id})">Apply</button>
+                </div>
             `;
-            container.appendChild(div);
         });
 
-    } catch {
+    } catch (error) {
+        console.error(error);
         container.innerHTML = "<p>Failed to load jobs</p>";
+    }
+}
+
+async function searchJobs() {
+    const title = document.getElementById("searchTitle").value;
+    const location = document.getElementById("searchLocation").value;
+    const sortValue = document.getElementById("sortOption").value;
+
+    let sortBy = "createdAt";
+    let direction = "desc";
+
+    if (sortValue === "salaryHigh") {
+        sortBy = "salary";
+        direction = "desc";
+    } else if (sortValue === "salaryLow") {
+        sortBy = "salary";
+        direction = "asc";
+    }
+
+    let url = `/api/jobs/search?page=0&size=10&sortBy=${sortBy}&direction=${direction}`;
+
+    if (title) url += `&title=${encodeURIComponent(title)}`;
+    if (location) url += `&location=${encodeURIComponent(location)}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        const jobs = data.content || data;
+
+        const container = document.getElementById("jobsContainer");
+        container.innerHTML = "";
+
+        if (!jobs || jobs.length === 0) {
+            container.innerHTML = "<p>No jobs found</p>";
+            return;
+        }
+
+        jobs.forEach(job => {
+            container.innerHTML += `
+                <div class="job-card">
+                    <h3>${job.title}</h3>
+                    <p>${job.description}</p>
+                    <p><b>Company:</b> ${job.company}</p>
+                    <p><b>Location:</b> ${job.location}</p>
+                    <p><b>Salary:</b> ₹${job.salary}</p>
+                    <button onclick="applyJob(${job.id})">Apply</button>
+                </div>
+            `;
+        });
+
+    } catch (error) {
+        console.error(error);
     }
 }
 
@@ -87,7 +139,7 @@ async function applyJob(jobId) {
     }
 
     try {
-        const response = await fetch(`${BASE_URL}/api/applications/${jobId}`, {
+        const response = await fetch(`/api/applications/${jobId}`, {
             method: "POST",
             headers: {
                 "Authorization": "Bearer " + token
@@ -117,7 +169,7 @@ async function loadMyApplications() {
     }
 
     try {
-        const response = await fetch(`${BASE_URL}/api/applications/my`, {
+        const response = await fetch("/api/applications/my", {
             headers: {
                 "Authorization": "Bearer " + token
             }
@@ -128,27 +180,22 @@ async function loadMyApplications() {
         container.innerHTML = "";
 
         applications.forEach(app => {
-            const div = document.createElement("div");
-            div.className = "application-card";
-            div.innerHTML = `
-                <h3>${app.job.title}</h3>
-                <p><b>Company:</b> ${app.job.company}</p>
-                <p><b>Status:</b> ${app.status}</p>
+            container.innerHTML += `
+                <div class="application-card">
+                    <h3>${app.job.title}</h3>
+                    <p><b>Company:</b> ${app.job.company}</p>
+                    <p><b>Status:</b> ${app.status}</p>
+                </div>
             `;
-            container.appendChild(div);
         });
 
-    } catch {
+    } catch (error) {
         container.innerHTML = "<p>Failed to load applications</p>";
     }
 }
 
 function goToMyApplications() {
     window.location.href = "my-applications.html";
-}
-
-function goToJobs() {
-    window.location.href = "jobs.html";
 }
 
 function logout() {
