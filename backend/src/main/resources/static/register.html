@@ -12,26 +12,30 @@
 <div class="card">
     <h2>Create Account</h2>
 
-    <div class="input-group">
-        <input type="text" placeholder=" " required>
-        <label>Full Name</label>
-    </div>
+    <form id="registerForm">
 
-    <div class="input-group">
-        <input type="email" placeholder=" " required>
-        <label>Email</label>
-    </div>
+        <div class="input-group">
+            <input type="text" id="name" placeholder=" " required>
+            <label>Full Name</label>
+        </div>
 
-    <div class="input-group">
-        <input type="password" placeholder=" " required>
-        <label>Password</label>
-    </div>
+        <div class="input-group">
+            <input type="email" id="email" placeholder=" " required>
+            <label>Email</label>
+        </div>
 
-    <div class="strength">
-        <div class="strength-bar"></div>
-    </div>
+        <div class="input-group">
+            <input type="password" id="password" placeholder=" " required>
+            <label>Password</label>
+        </div>
 
-    <button>Register</button>
+        <div class="strength">
+            <div class="strength-bar"></div>
+        </div>
+
+        <button type="submit">Register</button>
+
+    </form>
 
     <p>Already have an account? <a href="login.html">Login</a></p>
 </div>

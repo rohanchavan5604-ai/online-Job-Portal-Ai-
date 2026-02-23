@@ -139,17 +139,19 @@ async function applyJob(jobId) {
     }
 
     try {
-        const response = await fetch(`/api/applications/${jobId}`, {
+        const response = await fetch(`/api/applications/apply/${jobId}`, {
             method: "POST",
             headers: {
                 "Authorization": "Bearer " + token
             }
         });
 
+        if (!response.ok) {
+            const text = await response.text();
+            throw new Error(text || "Application failed");
+        }
+
         const data = await response.json();
-
-        if (!response.ok) throw new Error(data.message || "Application failed");
-
         alert("Applied successfully!");
 
     } catch (error) {
@@ -176,15 +178,23 @@ async function loadMyApplications() {
         });
 
         const applications = await response.json();
-
         container.innerHTML = "";
+
+        if (!applications.length) {
+            container.innerHTML = "<p>No applications yet.</p>";
+            return;
+        }
 
         applications.forEach(app => {
             container.innerHTML += `
                 <div class="application-card">
                     <h3>${app.job.title}</h3>
                     <p><b>Company:</b> ${app.job.company}</p>
-                    <p><b>Status:</b> ${app.status}</p>
+                    <p><b>Location:</b> ${app.job.location}</p>
+                    <p><b>Salary:</b> ₹${app.job.salary}</p>
+                    <span class="status-badge status-${app.status}">
+                        ${app.status}
+                    </span>
                 </div>
             `;
         });

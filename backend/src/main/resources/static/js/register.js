@@ -21,3 +21,44 @@ tsParticles.load("tsparticles", {
         }
     }
 });
+
+document.getElementById("registerForm").addEventListener("submit", async function (e) {
+
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (!name || !email || !password) {
+        alert("All fields are required");
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password
+            })
+        });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            alert("Registration failed: " + errorText);
+            return;
+        }
+
+        alert("Registration successful");
+        window.location.href = "login.html";
+
+    } catch (error) {
+        alert("Server not reachable");
+        console.error(error);
+    }
+});
