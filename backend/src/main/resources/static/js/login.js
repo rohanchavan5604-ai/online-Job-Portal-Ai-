@@ -14,10 +14,7 @@ async function login() {
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                email: email,
-                password: password
-            })
+            body: JSON.stringify({ email, password })
         });
 
         if (!response.ok) {
@@ -26,9 +23,16 @@ async function login() {
             return;
         }
 
-        const token = await response.text();
-        localStorage.setItem("token", token);
-        window.location.href = "jobs.html";
+        const data = await response.json();
+
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role);
+
+        if (data.role === "ADMIN") {
+            window.location.href = "admin-dashboard.html";
+        } else {
+            window.location.href = "jobs.html";
+        }
 
     } catch (error) {
         alert("Server not reachable. Is backend running?");

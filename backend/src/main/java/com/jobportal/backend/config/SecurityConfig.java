@@ -45,16 +45,17 @@ public class SecurityConfig {
                 .authenticationProvider(authenticationProvider)
                 .authorizeHttpRequests(auth -> auth
 
-            .requestMatchers(
-              "/",
-            "/index.html",
-            "/login.html",
-            "/register.html",
-            "/jobs.html",
-            "/my-applications.html",
-            "/css/**",
-            "/js/**"
-            ).permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/login.html",
+                                "/register.html",
+                                "/jobs.html",
+                                "/my-applications.html",
+                                "/admin-dashboard.html",
+                                "/css/**",
+                                "/js/**"
+                        ).permitAll()
 
                         .requestMatchers("/api/auth/**").permitAll()
 
@@ -68,6 +69,8 @@ public class SecurityConfig {
 
                         .requestMatchers(HttpMethod.GET, "/api/applications").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/applications/**").hasRole("ADMIN")
+
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )

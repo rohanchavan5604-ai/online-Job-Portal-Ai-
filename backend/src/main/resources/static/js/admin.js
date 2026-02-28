@@ -1,27 +1,105 @@
 async function loadDashboard() {
 
     const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
 
-    const response = await fetch("http://localhost:5604/api/admin/stats", {
-        headers: {
-            "Authorization": "Bearer " + token
+    if (!token || role !== "ADMIN") {
+        redirectToLogin();
+        return;
+    }
+
+    try {
+        const response = await fetch("/api/admin/stats", {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Unauthorized or server error");
         }
-    });
 
-    if (response.ok) {
         const data = await response.json();
-        document.getElementById("totalJobs").innerText = data.totalJobs;
-        document.getElementById("totalUsers").innerText = data.totalUsers;
-        document.getElementById("totalApplications").innerText = data.totalApplications;
-    } else {
-        alert("Access denied");
-        window.location.href = "login.html";
+
+        updateField("totalJobs", data.totalJobs);
+        updateField("totalUsers", data.totalUsers);
+        updateField("totalApplications", data.totalApplications);
+        updateField("totalApplied", data.totalApplied);
+        updateField("totalShortlisted", data.totalShortlisted);
+        updateField("totalInterviewScheduled", data.totalInterviewScheduled);
+        updateField("totalInterviewed", data.totalInterviewed);
+        updateField("totalOffered", data.totalOffered);
+        updateField("totalHired", data.totalHired);
+        updateField("totalRejected", data.totalRejected);
+
+    } catch (error) {
+        console.error("Dashboard error:", error);
+        redirectToLogin();
+    }
+}
+
+async function loadApplications() {
+
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch("/api/applications", {
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to load applications");
+        }
+
+        const data = await response.json();
+        const table = document.getElementById("applicationsTable");
+
+        if (!table) return;
+
+        table.innerHTML = "";
+
+        data.forEach(app => {
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td>${app.userEmail}</td>
+                <td>${app.userEmail}</td>
+                <td>${app.jobTitle}</td>
+                <td>${app.status}</td>
+                <td>-</td>
+            `;
+
+            table.appendChild(row);
+        });
+
+    } catch (error) {
+        console.error("Applications error:", error);
+    }
+}
+
+function updateField(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.innerText = value ?? 0;
     }
 }
 
 function logout() {
-    localStorage.removeItem("token");
+    localStorage.clear();
     window.location.href = "login.html";
 }
 
-loadDashboard();
+function redirectToLogin() {
+    localStorage.clear();
+    window.location.href = "login.html";
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    loadDashboard();
+    loadApplications();
+});

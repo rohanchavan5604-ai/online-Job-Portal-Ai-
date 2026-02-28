@@ -1,13 +1,15 @@
 package com.jobportal.backend.controller;
 
+import com.jobportal.backend.dto.AdminStats;
+import com.jobportal.backend.entity.Application;
+import com.jobportal.backend.entity.ApplicationStatus;
 import com.jobportal.backend.repository.ApplicationRepository;
 import com.jobportal.backend.repository.JobRepository;
 import com.jobportal.backend.repository.UserRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -28,14 +30,36 @@ public class AdminController {
     }
 
     @GetMapping("/stats")
-    public Map<String, Long> getDashboardStats() {
+    public AdminStats getDashboardStats() {
 
-        Map<String, Long> stats = new HashMap<>();
+        long totalJobs = jobRepository.count();
+        long totalUsers = userRepository.count();
+        long totalApplications = applicationRepository.count();
 
-        stats.put("totalJobs", jobRepository.count());
-        stats.put("totalUsers", userRepository.count());
-        stats.put("totalApplications", applicationRepository.count());
+        long totalApplied = applicationRepository.countByStatus(ApplicationStatus.APPLIED);
+        long totalShortlisted = applicationRepository.countByStatus(ApplicationStatus.SHORTLISTED);
+        long totalInterviewScheduled = applicationRepository.countByStatus(ApplicationStatus.INTERVIEW_SCHEDULED);
+        long totalInterviewed = applicationRepository.countByStatus(ApplicationStatus.INTERVIEWED);
+        long totalOffered = applicationRepository.countByStatus(ApplicationStatus.OFFERED);
+        long totalHired = applicationRepository.countByStatus(ApplicationStatus.HIRED);
+        long totalRejected = applicationRepository.countByStatus(ApplicationStatus.REJECTED);
 
-        return stats;
+        return new AdminStats(
+                totalUsers,
+                totalJobs,
+                totalApplications,
+                totalApplied,
+                totalShortlisted,
+                totalInterviewScheduled,
+                totalInterviewed,
+                totalOffered,
+                totalHired,
+                totalRejected
+        );
+    }
+
+    @GetMapping("/applications")
+    public List<Application> getAllApplications() {
+        return applicationRepository.findAll();
     }
 }

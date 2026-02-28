@@ -23,12 +23,18 @@ public class Application {
     @Column(nullable = false)
     private ApplicationStatus status;
 
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime appliedDate;
+    @Column(name = "applied_date", nullable = false, updatable = false)
+    private LocalDateTime appliedAt;
+
+    @Column(name = "interview_date")
+    private LocalDateTime interviewDate;
+
+    @Column(length = 500)
+    private String remarks;
 
     @PrePersist
-    public void prePersist() {
-        this.appliedDate = LocalDateTime.now();
+    public void onCreate() {
+        this.appliedAt = LocalDateTime.now();
         this.status = ApplicationStatus.APPLIED;
     }
 
@@ -60,7 +66,23 @@ public class Application {
         this.status = status;
     }
 
-    public LocalDateTime getAppliedDate() {
-        return appliedDate;
+    public LocalDateTime getAppliedAt() {
+        return appliedAt;
+    }
+
+    public LocalDateTime getInterviewDate() {
+        return interviewDate;
+    }
+
+    public void setInterviewDate(LocalDateTime interviewDate) {
+        this.interviewDate = interviewDate;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }
