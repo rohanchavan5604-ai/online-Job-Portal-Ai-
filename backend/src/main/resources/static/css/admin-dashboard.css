@@ -1,0 +1,201 @@
+/* ================= ADMIN DASHBOARD ================= */
+
+body{
+background:
+radial-gradient(circle at 20% 30%, rgba(59,130,246,0.15), transparent 40%),
+radial-gradient(circle at 80% 70%, rgba(124,58,237,0.15), transparent 40%),
+linear-gradient(135deg,#0f172a,#0b1120);
+color:white;
+font-family:'Segoe UI',sans-serif;
+margin:0;
+}
+
+/* ===== NAVBAR ===== */
+
+.navbar{
+position:fixed;
+top:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 100px;
+background:rgba(15,23,42,0.8);
+backdrop-filter:blur(12px);
+border-bottom:1px solid rgba(56,189,248,0.2);
+z-index:1000;
+}
+
+.logo{
+font-size:24px;
+font-weight:600;
+background:linear-gradient(90deg,#38bdf8,#a78bfa);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+.nav-links a{
+margin-left:30px;
+text-decoration:none;
+color:#e2e8f0;
+font-weight:500;
+transition:0.3s;
+}
+
+.nav-links a:hover
+
+/* ===== SECTION ===== */
+
+.job-search{
+padding:140px 120px 80px 120px;
+text-align:center;
+}
+
+.job-search h2{
+font-size:36px;
+margin-bottom:50px;
+background:linear-gradient(90deg,#38bdf8,#a78bfa);
+-webkit-background-clip:text;
+color:transparent;
+}
+
+/* ===== STATS CARDS ===== */
+
+.search-container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:30px;
+max-width:1100px;
+margin:auto;
+margin-bottom:80px;
+}
+
+.job-card{
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(56,189,248,0.2);
+padding:30px;
+border-radius:18px;
+transition:0.3s ease;
+backdrop-filter:blur(10px);
+}
+
+.job-card:hover{
+transform:translateY(-6px);
+border-color:#38bdf8;
+box-shadow:0 15px 40px rgba(56,189,248,0.25);
+}
+
+.job-card h3{
+color:#38bdf8;
+margin-bottom:10px;
+font-size:18px;
+}
+
+.job-card p{
+font-size:28px;
+font-weight:600;
+color:#e2e8f0;
+}
+
+/* ===== TABLE ===== */
+
+.table-container{
+max-width:1100px;
+margin:auto;
+background:rgba(255,255,255,0.03);
+border-radius:16px;
+padding:30px;
+border:1px solid rgba(56,189,248,0.15);
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+color:#e2e8f0;
+}
+
+thead{
+border-bottom:1px solid rgba(255,255,255,0.15);
+}
+
+th{
+padding:14px 16px;
+text-align:left;
+font-size:15px;
+color:#38bdf8;
+}
+
+td{
+padding:14px 16px;
+font-size:14px;
+}
+
+tr{
+border-bottom:1px solid rgba(255,255,255,0.05);
+transition:0.2s;
+}
+
+tr:hover{
+background:rgba(255,255,255,0.03);
+}
+
+/* ===== STATUS BADGE ===== */
+
+.status{
+padding:4px 10px;
+border-radius:20px;
+font-size:12px;
+font-weight:600;
+}
+
+.status.APPLIED{
+background:#2563eb;
+}
+
+.status.REJECTED{
+background:#ef4444;
+}
+
+.status.SHORTLISTED{
+background:#22c55e;
+}
+
+/* ===== ACTION BUTTON ===== */
+
+.action-btn{
+padding:6px 12px;
+border:none;
+border-radius:6px;
+background:linear-gradient(90deg,#2563eb,#7c3aed);
+color:white;
+font-size:13px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.action-btn:hover{
+transform:scale(1.05);
+box-shadow:0 8px 20px rgba(124,58,237,0.4);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media(max-width:768px){
+
+.navbar{
+padding:20px;
+}
+
+.job-search{
+padding:120px 20px;
+}
+
+.search-container{
+grid-template-columns:1fr;
+}
+
+table{
+font-size:12px;
+}
+
+}

@@ -1,105 +1,130 @@
 async function loadDashboard() {
 
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+const token = localStorage.getItem("token");
+const role = localStorage.getItem("role");
 
-    if (!token || role !== "ADMIN") {
-        redirectToLogin();
-        return;
-    }
+if (!token || role !== "ADMIN") {
+redirectToLogin();
+return;
+}
 
-    try {
-        const response = await fetch("/api/admin/stats", {
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + token
-            }
-        });
+try {
 
-        if (!response.ok) {
-            throw new Error("Unauthorized or server error");
-        }
+const response = await fetch("/api/admin/stats", {
+method: "GET",
+headers: {
+"Authorization": "Bearer " + token
+}
+});
 
-        const data = await response.json();
+if (!response.ok) {
+throw new Error("Unauthorized or server error");
+}
 
-        updateField("totalJobs", data.totalJobs);
-        updateField("totalUsers", data.totalUsers);
-        updateField("totalApplications", data.totalApplications);
-        updateField("totalApplied", data.totalApplied);
-        updateField("totalShortlisted", data.totalShortlisted);
-        updateField("totalInterviewScheduled", data.totalInterviewScheduled);
-        updateField("totalInterviewed", data.totalInterviewed);
-        updateField("totalOffered", data.totalOffered);
-        updateField("totalHired", data.totalHired);
-        updateField("totalRejected", data.totalRejected);
+const data = await response.json();
 
-    } catch (error) {
-        console.error("Dashboard error:", error);
-        redirectToLogin();
-    }
+updateField("totalJobs", data.totalJobs);
+updateField("totalUsers", data.totalUsers);
+updateField("totalApplications", data.totalApplications);
+updateField("totalApplied", data.totalApplied);
+updateField("totalShortlisted", data.totalShortlisted);
+updateField("totalInterviewScheduled", data.totalInterviewScheduled);
+updateField("totalInterviewed", data.totalInterviewed);
+updateField("totalOffered", data.totalOffered);
+updateField("totalHired", data.totalHired);
+updateField("totalRejected", data.totalRejected);
+
+} catch (error) {
+
+console.error("Dashboard error:", error);
+redirectToLogin();
+
+}
+
 }
 
 async function loadApplications() {
 
-    const token = localStorage.getItem("token");
+const token = localStorage.getItem("token");
 
-    try {
-        const response = await fetch("/api/applications", {
-            method: "GET",
-            headers: {
-                "Authorization": "Bearer " + token
-            }
-        });
+if (!token) {
+redirectToLogin();
+return;
+}
 
-        if (!response.ok) {
-            throw new Error("Failed to load applications");
-        }
+try {
 
-        const data = await response.json();
-        const table = document.getElementById("applicationsTable");
+const response = await fetch("/api/applications", {
+method: "GET",
+headers: {
+"Authorization": "Bearer " + token
+}
+});
 
-        if (!table) return;
+if (!response.ok) {
+throw new Error("Failed to load applications");
+}
 
-        table.innerHTML = "";
+const data = await response.json();
+const table = document.getElementById("applicationsTable");
 
-        data.forEach(app => {
+if (!table) return;
 
-            const row = document.createElement("tr");
+table.innerHTML = "";
 
-            row.innerHTML = `
-                <td>${app.userEmail}</td>
-                <td>${app.userEmail}</td>
-                <td>${app.jobTitle}</td>
-                <td>${app.status}</td>
-                <td>-</td>
-            `;
+data.forEach(app => {
 
-            table.appendChild(row);
-        });
+const row = document.createElement("tr");
 
-    } catch (error) {
-        console.error("Applications error:", error);
-    }
+row.innerHTML = `
+
+<td>${app.user?.fullName || "N/A"}</td>
+<td>${app.user?.email || "N/A"}</td>
+<td>${app.job?.title || "N/A"}</td>
+<td>${app.status || "N/A"}</td>
+<td>-</td>
+`;
+
+table.appendChild(row);
+
+});
+
+} catch (error) {
+
+console.error("Applications error:", error);
+
+}
+
 }
 
 function updateField(id, value) {
-    const element = document.getElementById(id);
-    if (element) {
-        element.innerText = value ?? 0;
-    }
+
+const element = document.getElementById(id);
+
+if (element) {
+element.innerText = value ?? 0;
+}
+
 }
 
 function logout() {
-    localStorage.clear();
-    window.location.href = "login.html";
+
+localStorage.removeItem("token");
+localStorage.removeItem("role");
+window.location.href = "login.html";
+
 }
 
 function redirectToLogin() {
-    localStorage.clear();
-    window.location.href = "login.html";
+
+localStorage.clear();
+window.location.href = "login.html";
+
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-    loadDashboard();
-    loadApplications();
+
+loadDashboard();
+loadApplications();
+
 });
