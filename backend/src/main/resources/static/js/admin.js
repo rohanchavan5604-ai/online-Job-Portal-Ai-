@@ -81,8 +81,20 @@ row.innerHTML = `
 <td>${app.user?.fullName || "N/A"}</td>
 <td>${app.user?.email || "N/A"}</td>
 <td>${app.job?.title || "N/A"}</td>
-<td>${app.status || "N/A"}</td>
-<td>-</td>
+<td class="status ${app.status?.toLowerCase()}">${app.status || "N/A"}</td>
+
+<td>
+
+<button onclick="updateStatus(${app.id}, 'SHORTLISTED')" class="btn-shortlist">Shortlist</button>
+
+<button onclick="updateStatus(${app.id}, 'INTERVIEW_SCHEDULED')" class="btn-interview">Interview</button>
+
+<button onclick="updateStatus(${app.id}, 'HIRED')" class="btn-hire">Hire</button>
+
+<button onclick="updateStatus(${app.id}, 'REJECTED')" class="btn-reject">Reject</button>
+
+</td>
+
 `;
 
 table.appendChild(row);
@@ -92,6 +104,35 @@ table.appendChild(row);
 } catch (error) {
 
 console.error("Applications error:", error);
+
+}
+
+}
+
+async function updateStatus(id, status) {
+
+const token = localStorage.getItem("token");
+
+try {
+
+const response = await fetch(`/api/applications/${id}/status`, {
+method: "PUT",
+headers: {
+"Content-Type": "application/json",
+"Authorization": "Bearer " + token
+},
+body: JSON.stringify({ status: status })
+});
+
+if (!response.ok) {
+throw new Error("Failed to update status");
+}
+
+loadApplications();
+
+} catch (error) {
+
+console.error("Status update error:", error);
 
 }
 

@@ -533,3 +533,44 @@ box-shadow:0 10px 25px rgba(124,58,237,0.5);
     background:#22c55e;
     color:white;
 }
+.btn-shortlist{
+background:#3498db;
+color:white;
+border:none;
+padding:5px 10px;
+margin:2px;
+cursor:pointer;
+}
+
+.btn-interview{
+background:#9b59b6;
+color:white;
+border:none;
+padding:5px 10px;
+margin:2px;
+cursor:pointer;
+}
+
+.btn-hire{
+background:#27ae60;
+color:white;
+border:none;
+padding:5px 10px;
+margin:2px;
+cursor:pointer;
+}
+
+.btn-reject{
+background:#e74c3c;
+color:white;
+border:none;
+padding:5px 10px;
+margin:2px;
+cursor:pointer;
+}
+
+.status.applied{color:orange;}
+.status.shortlisted{color:#3498db;}
+.status.interview_scheduled{color:#9b59b6;}
+.status.hired{color:#27ae60;}
+.status.rejected{color:#e74c3c;}

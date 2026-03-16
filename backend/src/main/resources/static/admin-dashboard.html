@@ -3,19 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <title>Admin Dashboard</title>
+
 <link rel="stylesheet" href="css/admin-dashboard.css">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
+
 <body>
 
 <div class="navbar">
+
     <h2 class="logo">Admin Dashboard</h2>
+
     <div class="nav-links">
         <a href="jobs.html">Jobs</a>
         <a href="#" onclick="logout()">Logout</a>
     </div>
+
 </div>
 
+
+<!-- SYSTEM STATS -->
+
 <section class="job-search">
+
     <h2>System Overview</h2>
 
     <div class="search-container">
@@ -51,14 +63,22 @@
         </div>
 
     </div>
+
 </section>
 
+
+<!-- APPLICATION MANAGEMENT -->
+
 <section class="job-search">
+
     <h2>Applications Management</h2>
 
     <div class="table-container">
-        <table>
+
+        <table class="applications-table">
+
             <thead>
+
                 <tr>
                     <th>User</th>
                     <th>Email</th>
@@ -66,12 +86,21 @@
                     <th>Status</th>
                     <th>Action</th>
                 </tr>
+
             </thead>
+
             <tbody id="applicationsTable">
+
+                <!-- JS WILL LOAD DATA HERE -->
+
             </tbody>
+
         </table>
+
     </div>
+
 </section>
+
 
 <script src="js/admin.js"></script>
 

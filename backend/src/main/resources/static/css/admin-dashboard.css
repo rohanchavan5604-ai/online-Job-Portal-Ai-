@@ -199,3 +199,65 @@ font-size:12px;
 }
 
 }
+.applications-table {
+width:100%;
+border-collapse:collapse;
+}
+
+.applications-table th,
+.applications-table td{
+padding:12px;
+text-align:left;
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.table-container{
+overflow-x:auto;
+}
+.btn-shortlist{
+background:#3498db;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:4px;
+margin:2px;
+cursor:pointer;
+font-size:12px;
+}
+
+.btn-interview{
+background:#9b59b6;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:4px;
+margin:2px;
+cursor:pointer;
+font-size:12px;
+}
+
+.btn-hire{
+background:#27ae60;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:4px;
+margin:2px;
+cursor:pointer;
+font-size:12px;
+}
+
+.btn-reject{
+background:#e74c3c;
+color:white;
+border:none;
+padding:6px 10px;
+border-radius:4px;
+margin:2px;
+cursor:pointer;
+font-size:12px;
+}
+
+button:hover{
+opacity:0.85;
+}
