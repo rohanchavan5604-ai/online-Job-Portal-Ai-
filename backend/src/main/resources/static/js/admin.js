@@ -77,24 +77,16 @@ data.forEach(app => {
 const row = document.createElement("tr");
 
 row.innerHTML = `
-
 <td>${app.user?.fullName || "N/A"}</td>
 <td>${app.user?.email || "N/A"}</td>
 <td>${app.job?.title || "N/A"}</td>
 <td class="status ${app.status?.toLowerCase()}">${app.status || "N/A"}</td>
-
 <td>
-
 <button onclick="updateStatus(${app.id}, 'SHORTLISTED')" class="btn-shortlist">Shortlist</button>
-
 <button onclick="updateStatus(${app.id}, 'INTERVIEW_SCHEDULED')" class="btn-interview">Interview</button>
-
 <button onclick="updateStatus(${app.id}, 'HIRED')" class="btn-hire">Hire</button>
-
 <button onclick="updateStatus(${app.id}, 'REJECTED')" class="btn-reject">Reject</button>
-
 </td>
-
 `;
 
 table.appendChild(row);
@@ -138,6 +130,59 @@ console.error("Status update error:", error);
 
 }
 
+async function loadUsers() {
+
+const token = localStorage.getItem("token");
+
+if (!token) {
+redirectToLogin();
+return;
+}
+
+try {
+
+const response = await fetch("/api/users", {
+method: "GET",
+headers: {
+"Authorization": "Bearer " + token
+}
+});
+
+if (!response.ok) {
+throw new Error("Failed to load users");
+}
+
+const users = await response.json();
+
+const table = document.getElementById("usersTableBody");
+
+if (!table) return;
+
+table.innerHTML = "";
+
+users.forEach(user => {
+
+const row = document.createElement("tr");
+
+row.innerHTML = `
+<td>${user.id}</td>
+<td>${user.fullName}</td>
+<td>${user.email}</td>
+<td>${user.role}</td>
+`;
+
+table.appendChild(row);
+
+});
+
+} catch (error) {
+
+console.error("Users error:", error);
+
+}
+
+}
+
 function updateField(id, value) {
 
 const element = document.getElementById(id);
@@ -167,5 +212,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
 loadDashboard();
 loadApplications();
+loadUsers();
 
 });

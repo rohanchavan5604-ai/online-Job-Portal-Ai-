@@ -40,7 +40,13 @@ public class ApplicationController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{applicationId}/status")
     public Application updateStatus(@PathVariable Long applicationId,
-                                    @RequestParam ApplicationStatus status) {
-        return applicationService.updateStatus(applicationId, status);
+                                @RequestBody java.util.Map<String,String> body) {
+
+    String statusValue = body.get("status");
+
+    ApplicationStatus status =
+            ApplicationStatus.valueOf(statusValue.toUpperCase());
+
+    return applicationService.updateStatus(applicationId, status);
     }
 }
