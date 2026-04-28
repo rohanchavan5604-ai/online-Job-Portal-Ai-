@@ -55,6 +55,7 @@ public class SecurityConfig {
                                 "/my-applications.html",
                                 "/admin-dashboard.html",
                                 "/profile.html",
+                                "post-job.html",
                                 "/css/**",
                                 "/js/**"
                         ).permitAll()

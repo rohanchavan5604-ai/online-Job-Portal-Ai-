@@ -66,13 +66,39 @@ async function loadJobs() {
                     <p><b>Location:</b> ${job.location}</p>
                     <p><b>Salary:</b> ₹${job.salary}</p>
                     <button onclick="applyJob(${job.id})">Apply</button>
+                    <button onclick="deleteJob(${job.id})">Delete</button>
                 </div>
             `;
         });
 
+        
+
     } catch (error) {
         console.error(error);
         container.innerHTML = "<p>Failed to load jobs</p>";
+    }
+}
+async function deleteJob(id) {
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(`/api/jobs/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
+
+        if (response.ok) {
+            alert("Job deleted successfully");
+            loadJobs();
+        } else {
+            alert("Failed to delete job");
+        }
+
+    } catch (error) {
+        console.error(error);
+        alert("Server error");
     }
 }
 

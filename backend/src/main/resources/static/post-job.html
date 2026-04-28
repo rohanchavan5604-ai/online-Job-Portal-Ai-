@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Post Job</title>
+    <link rel="stylesheet" href="css/post-job.css">
+</head>
+<body>
+
+<div class="navbar">
+    <h2>Post New Job</h2>
+    <a href="admin-dashboard.html">Back</a>
+</div>
+
+<div class="job-card">
+    <input type="text" id="title" placeholder="Job Title"><br><br>
+    <input type="text" id="company" placeholder="Company"><br><br>
+    <input type="number" id="salary" placeholder="Salary"><br><br>
+    <input type="text" id="location" placeholder="Location"><br><br>
+    <textarea id="description" placeholder="Description"></textarea><br><br>
+
+    <button onclick="postJob()">Post Job</button>
+</div>
+
+<script src="js/post-job.js"></script>
+
+</body>
+</html>
