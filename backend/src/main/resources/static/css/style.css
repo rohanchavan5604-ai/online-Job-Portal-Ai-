@@ -574,3 +574,204 @@ cursor:pointer;
 .status.interview_scheduled{color:#9b59b6;}
 .status.hired{color:#27ae60;}
 .status.rejected{color:#e74c3c;}
+
+/* =====================================================
+   ADDITIONAL APPLICATION STATUS SUPPORT
+   Existing CSS above is intentionally unchanged.
+===================================================== */
+
+.status-shortlisted {
+    background: #22c55e;
+    color: white;
+}
+
+.status-interview_scheduled {
+    background: #9b59b6;
+    color: white;
+}
+
+.status-interviewed {
+    background: #6366f1;
+    color: white;
+}
+
+.status-offered {
+    background: #f59e0b;
+    color: white;
+}
+
+.status-hired {
+    background: #16a34a;
+    color: white;
+}
+
+.status-rejected {
+    background: #ef4444;
+    color: white;
+}
+
+/* My Applications spacing */
+.applications-wrapper {
+    padding-top: 120px;
+}
+
+/* Mobile support for application cards */
+@media (max-width: 768px) {
+    .applications-wrapper {
+        padding: 100px 20px 60px;
+    }
+
+    .applications-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+/* =====================================================
+   MY APPLICATIONS NAVBAR BUTTON FIX
+   Existing CSS remains unchanged
+===================================================== */
+
+.navbar h2 {
+    margin: 0;
+
+    font-size: 28px;
+
+    font-weight: 600;
+
+    background:
+        linear-gradient(
+            90deg,
+            #38bdf8,
+            #a78bfa
+        );
+
+    -webkit-background-clip: text;
+
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+.navbar > div {
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+
+.navbar button {
+
+    padding: 10px 20px;
+
+    border-radius: 25px;
+
+    border: 1px solid
+        rgba(56, 189, 248, 0.4);
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    color: #e2e8f0;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+
+}
+
+
+.navbar button:hover {
+
+    background:
+        linear-gradient(
+            90deg,
+            #2563eb,
+            #7c3aed
+        );
+
+    border-color: transparent;
+
+    color: white;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px
+        rgba(56, 189, 248, 0.25);
+
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 768px) {
+
+    .navbar {
+
+        padding: 18px 20px;
+
+    }
+
+
+    .navbar h2 {
+
+        font-size: 22px;
+
+    }
+
+
+    .navbar button {
+
+        padding: 8px 13px;
+
+        font-size: 12px;
+
+    }
+
+}
+/* =====================================================
+   INTERVIEW NOTIFICATION - NAVBAR FIX
+===================================================== */
+
+#interviewNotification {
+    position: relative !important;
+    z-index: 10 !important;
+
+    margin-top: 30px !important;
+}
+
+
+/* Make sure navbar stays above page content */
+
+.navbar {
+    position: relative;
+    z-index: 1000;
+}
+
+
+/* Notification heading spacing */
+
+#interviewNotification h3 {
+    margin-top: 0 !important;
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    #interviewNotification {
+        width: calc(100% - 30px) !important;
+        margin-top: 20px !important;
+    }
+
+}

@@ -20,6 +20,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     boolean existsByUserAndJob(User user, Job job);
 
-    long countByStatus(ApplicationStatus status);
+    boolean existsByJob(Job job);
 
+    long countByStatus(ApplicationStatus status);
 }

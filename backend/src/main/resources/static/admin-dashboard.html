@@ -1,134 +1,331 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<title>Admin Dashboard</title>
 
-<link rel="stylesheet" href="css/admin-dashboard.css">
+    <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - Job Portal AI</title>
+
+    <link rel="stylesheet" href="css/admin-dashboard.css">
 
 </head>
 
 <body>
 
-<div class="navbar">
+    <!-- ================= HEADER ================= -->
 
-    <h2 class="logo">Admin Dashboard</h2>
+    <header class="navbar">
 
-    <div class="nav-links">
-        <a href="jobs.html">Jobs</a>
-        <a href="#" onclick="logout()">Logout</a>
-    </div>
+        <h2 class="logo">
+            Admin Dashboard
+        </h2>
 
-</div>
+        <div class="nav-links">
 
+            <a href="jobs.html">
+                Jobs
+            </a>
 
-<!-- SYSTEM STATS -->
+            <a href="#" onclick="logout()">
+                Logout
+            </a>
 
-<section class="job-search">
-
-    <h2>System Overview</h2>
-
-    <div class="search-container">
-
-        <div class="job-card">
-            <h3>Total Jobs</h3>
-            <p id="totalJobs">0</p>
         </div>
 
-        <div class="job-card">
-            <h3>Total Users</h3>
-            <p id="totalUsers">0</p>
-        </div>
-
-        <div class="job-card">
-            <h3>Total Applications</h3>
-            <p id="totalApplications">0</p>
-        </div>
-
-        <div class="job-card">
-            <h3>Shortlisted</h3>
-            <p id="totalShortlisted">0</p>
-        </div>
-
-        <div class="job-card">
-            <h3>Interview Scheduled</h3>
-            <p id="totalInterviewScheduled">0</p>
-        </div>
-
-        <div class="job-card">
-            <h3>Rejected</h3>
-            <p id="totalRejected">0</p>
-        </div>
-
-    </div>
-
-</section>
+    </header>
 
 
-<!-- APPLICATION MANAGEMENT -->
+    <!-- ================= MAIN CONTENT ================= -->
 
-<section class="job-search">
-
-    <h2>Applications Management</h2>
-
-    <div class="table-container">
-
-        <table class="applications-table">
-
-            <thead>
-
-                <tr>
-                    <th>User</th>
-                    <th>Email</th>
-                    <th>Job</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-
-            </thead>
-
-            <tbody id="applicationsTable">
-
-                <!-- JS WILL LOAD DATA HERE -->
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</section>
-<section class="job-search">
-
-    <h2>Users Management</h2>
-
-    <div class="table-container">
-
-        <table class="applications-table">
-
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                </tr>
-            </thead>
-
-            <tbody id="usersTableBody">
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</section>
+    <main class="admin-container">
 
 
-<script src="js/admin.js"></script>
+        <!-- ================= SYSTEM OVERVIEW ================= -->
+
+        <section class="job-search">
+
+            <h2>
+                System Overview
+            </h2>
+
+            <div class="search-container">
+
+
+                <!-- TOTAL JOBS -->
+
+                <div class="job-card">
+
+                    <h3>
+                        Total Jobs
+                    </h3>
+
+                    <p id="totalJobs">
+                        0
+                    </p>
+
+                </div>
+
+
+                <!-- TOTAL USERS -->
+
+                <div class="job-card">
+
+                    <h3>
+                        Total Users
+                    </h3>
+
+                    <p id="totalUsers">
+                        0
+                    </p>
+
+                </div>
+
+
+                <!-- TOTAL APPLICATIONS -->
+
+                <div class="job-card">
+
+                    <h3>
+                        Total Applications
+                    </h3>
+
+                    <p id="totalApplications">
+                        0
+                    </p>
+
+                </div>
+
+
+                <!-- APPLIED -->
+
+                <div class="job-card">
+
+                    <h3>
+                        Applied
+                    </h3>
+
+                    <p id="totalApplied">
+                        0
+                    </p>
+
+                </div>
+
+
+                <!-- SHORTLISTED -->
+
+                <div class="job-card">
+
+                    <h3>
+                        Shortlisted
+                    </h3>
+
+                    <p id="totalShortlisted">
+                        0
+                    </p>
+
+                </div>
+
+
+                <!-- INTERVIEW SCHEDULED -->
+
+                <div class="job-card">
+
+                    <h3>
+                        Interview Scheduled
+                    </h3>
+
+                    <p id="totalInterviewScheduled">
+                        0
+                    </p>
+
+                </div>
+
+
+                <!-- INTERVIEWED -->
+
+                <div class="job-card">
+
+                    <h3>
+                        Interviewed
+                    </h3>
+
+                    <p id="totalInterviewed">
+                        0
+                    </p>
+
+                </div>
+
+
+                <!-- OFFERED -->
+
+                <div class="job-card">
+
+                    <h3>
+                        Offered
+                    </h3>
+
+                    <p id="totalOffered">
+                        0
+                    </p>
+
+                </div>
+
+
+                <!-- HIRED -->
+
+                <div class="job-card">
+
+                    <h3>
+                        Hired
+                    </h3>
+
+                    <p id="totalHired">
+                        0
+                    </p>
+
+                </div>
+
+
+                <!-- REJECTED -->
+
+                <div class="job-card">
+
+                    <h3>
+                        Rejected
+                    </h3>
+
+                    <p id="totalRejected">
+                        0
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= APPLICATIONS MANAGEMENT ================= -->
+
+        <section class="job-search">
+
+            <h2>
+                Applications Management
+            </h2>
+
+            <div class="table-container">
+
+                <table class="applications-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                User
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Job
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="applicationsTable">
+
+                        <!--
+                            JavaScript will load
+                            applications here
+                        -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= USERS MANAGEMENT ================= -->
+
+        <section class="job-search">
+
+            <h2>
+                Users Management
+            </h2>
+
+            <div class="table-container">
+
+                <table class="applications-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                ID
+                            </th>
+
+                            <th>
+                                Name
+                            </th>
+
+                            <th>
+                                Email
+                            </th>
+
+                            <th>
+                                Role
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="usersTableBody">
+
+                        <!--
+                            JavaScript will load
+                            users here
+                        -->
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="js/admin.js"></script>
 
 </body>
+
 </html>

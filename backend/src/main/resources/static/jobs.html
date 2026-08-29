@@ -1,41 +1,108 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <title>Jobs</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Jobs - Job Portal AI</title>
+
     <link rel="stylesheet" href="css/style.css">
+
 </head>
 
 <body>
 
-<div class="navbar">
-    <h2 class="logo">Job Portal</h2>
-    <div class="nav-links">
-        <a href="#" onclick="goToMyApplications()">My Applications</a>
-        <a href="#" onclick="logout()">Logout</a>
+    <!-- ================= NAVBAR ================= -->
+
+    <div class="navbar">
+
+        <h2 class="logo">
+            Job Portal AI
+        </h2>
+
+        <div class="nav-links">
+
+            <a href="#" onclick="goToMyApplications()">
+                My Applications
+            </a>
+
+            <a href="#" onclick="logout()">
+                Logout
+            </a>
+
+        </div>
+
     </div>
-</div>
 
-<section class="job-search">
 
-    <h2>Search Jobs</h2>
+    <!-- ================= JOB SEARCH ================= -->
 
-    <div class="search-container">
-        <input type="text" id="searchTitle" placeholder="Job Title">
-        <input type="text" id="searchLocation" placeholder="Location">
-        <select id="sortOption">
-            <option value="latest">Latest</option>
-            <option value="salaryHigh">Salary High → Low</option>
-            <option value="salaryLow">Salary Low → High</option>
-        </select>
-        <button onclick="searchJobs()">Search</button>
-    </div>
+    <section class="job-search">
 
-    <div id="jobsContainer"></div>
+        <h2>Search Jobs</h2>
 
-</section>
 
-<script src="js/app.js"></script>
+        <!-- SEARCH -->
+
+        <div class="search-container">
+
+            <input
+                type="text"
+                id="searchTitle"
+                placeholder="Job Title"
+            >
+
+
+            <input
+                type="text"
+                id="searchLocation"
+                placeholder="Location"
+            >
+
+
+            <select id="sortOption">
+
+                <option value="latest">
+                    Latest
+                </option>
+
+                <option value="salaryHigh">
+                    Salary High → Low
+                </option>
+
+                <option value="salaryLow">
+                    Salary Low → High
+                </option>
+
+            </select>
+
+
+            <button onclick="searchJobs()">
+                Search
+            </button>
+
+        </div>
+
+
+        <!-- ================= JOBS ================= -->
+
+        <div id="jobsContainer">
+
+            <!-- Jobs loaded by app.js -->
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script src="js/app.js"></script>
+
 </body>
+
 </html>
