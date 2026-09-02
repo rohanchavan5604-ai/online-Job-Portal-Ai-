@@ -1,28 +1,164 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Profile</title>
-    <link rel="stylesheet" href="css/profile.css">
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile - Job Portal AI</title>
+
+    <link rel="stylesheet"
+          href="css/profile.css">
+
 </head>
+
 <body>
 
-<div class="navbar">
-    <h2>My Profile</h2>
-    <a href="jobs.html">Back</a>
-</div>
+    <!-- =====================================================
+         NAVBAR
+    ====================================================== -->
 
-<div class="job-card">
-    <h3>Name:</h3>
-    <p id="name">Loading...</p>
+    <div class="navbar">
 
-    <h3>Email:</h3>
-    <p id="email">Loading...</p>
+        <h2>
+            My Profile
+        </h2>
 
-    <h3>Role:</h3>
-    <p id="role">Loading...</p>
-</div>
+        <a href="jobs.html">
+            Back to Jobs
+        </a>
 
-<script src="js/profile.js"></script>
+    </div>
+
+
+    <!-- =====================================================
+         PROFILE CARD
+    ====================================================== -->
+
+    <div class="job-card">
+
+
+        <!-- =================================================
+             USER NAME
+        ================================================== -->
+
+        <h3>
+            Name
+        </h3>
+
+        <p id="name">
+            Loading...
+        </p>
+
+
+        <!-- =================================================
+             USER EMAIL
+        ================================================== -->
+
+        <h3>
+            Email
+        </h3>
+
+        <p id="email">
+            Loading...
+        </p>
+
+
+        <!-- =================================================
+             DIVIDER
+        ================================================== -->
+
+        <hr>
+
+
+        <!-- =================================================
+             RESUME
+        ================================================== -->
+
+        <h3>
+            Resume
+        </h3>
+
+
+        <!-- FILE SELECT -->
+
+        <input
+            type="file"
+            id="resumeFile"
+            accept=".pdf,application/pdf"
+        >
+
+
+        <!-- UPLOAD -->
+
+        <button
+            id="uploadResumeBtn">
+
+            Upload Resume
+
+        </button>
+
+
+        <!-- RESUME STATUS -->
+
+        <p id="resumeStatus"></p>
+
+
+        <!-- =================================================
+             RESUME ACTIONS
+        ================================================== -->
+
+        <div
+            id="resumeActions"
+            style="display: none;"
+        >
+
+
+            <!-- VIEW -->
+
+            <button
+                id="viewResumeBtn">
+
+                View Resume
+
+            </button>
+
+
+            <!-- DOWNLOAD -->
+
+            <button
+                id="downloadResumeBtn">
+
+                Download Resume
+
+            </button>
+
+
+            <!-- DELETE -->
+
+            <button
+                id="deleteResumeBtn">
+
+                Delete Resume
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="js/profile.js"></script>
 
 </body>
+
 </html>

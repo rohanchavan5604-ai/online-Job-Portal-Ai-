@@ -26,6 +26,10 @@
 
         <div class="nav-links">
 
+            <a href="profile.html">
+                Profile
+            </a>
+
             <a href="#" onclick="goToMyApplications()">
                 My Applications
             </a>
@@ -98,6 +102,45 @@
 
     </section>
 
+    <!-- CUSTOM MODAL -->
+
+<div id="customModal" class="custom-modal">
+
+    <div class="modal-overlay"></div>
+
+    <div class="modal-box">
+
+        <div id="modalIcon" class="modal-icon">
+            !
+        </div>
+
+        <h2 id="modalTitle">
+            Resume Required
+        </h2>
+
+        <p id="modalMessage">
+            Please upload your resume before applying for a job.
+        </p>
+
+        <div class="modal-buttons">
+
+            <button
+                id="modalCancelBtn"
+                class="modal-cancel">
+                Cancel
+            </button>
+
+            <button
+                id="modalActionBtn"
+                class="modal-action">
+                Go to Profile
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
 
     <!-- ================= JAVASCRIPT ================= -->
 

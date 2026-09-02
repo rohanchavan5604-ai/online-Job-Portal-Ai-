@@ -621,18 +621,20 @@ async function searchJobs() {
 async function applyJob(jobId) {
 
     const token =
-        localStorage.getItem(
-            "token"
-        );
+        localStorage.getItem("token");
+
+    /* -----------------------------------------------------
+       LOGIN CHECK
+    ----------------------------------------------------- */
 
     if (!token) {
 
-        alert(
-            "Please login first"
+        showCustomModal(
+            "Login Required",
+            "Please login before applying for a job.",
+            "Login",
+            true
         );
-
-        window.location.href =
-            "login.html";
 
         return;
     }
@@ -656,29 +658,97 @@ async function applyJob(jobId) {
                 }
             );
 
-        if (!response.ok) {
+        const text =
+            await response.text();
 
-            const text =
-                await response.text();
 
-            throw new Error(
-                text ||
-                "Application failed"
+        /* =================================================
+           RESUME NOT UPLOADED
+        ================================================= */
+
+        if (
+            text.includes(
+                "Please upload your resume before applying"
+            )
+        ) {
+
+            showCustomModal(
+                "Resume Required",
+                "Please upload your resume before applying for a job.",
+                "Go to Profile",
+                false
             );
 
+            return;
         }
 
-        await response.json();
 
-        alert(
-            "Applied successfully!"
+        /* =================================================
+           OTHER ERROR
+        ================================================= */
+
+        if (!response.ok) {
+
+            let errorMessage =
+                "Application failed.";
+
+            try {
+
+                const data =
+                    JSON.parse(text);
+
+                errorMessage =
+                    data.message ||
+                    data.error ||
+                    errorMessage;
+
+            }
+            catch (error) {
+
+                if (text) {
+
+                    errorMessage =
+                        text;
+
+                }
+
+            }
+
+            showCustomModal(
+                "Application Failed",
+                errorMessage,
+                "OK",
+                true
+            );
+
+            return;
+        }
+
+
+        /* =================================================
+           SUCCESS
+        ================================================= */
+
+        showCustomModal(
+            "Application Submitted",
+            "Your application has been submitted successfully!",
+            "OK",
+            true
         );
 
     }
     catch (error) {
 
-        alert(
-            error.message
+        console.error(
+            "Apply error:",
+            error
+        );
+
+        showCustomModal(
+            "Something Went Wrong",
+            "Unable to submit your application. Please try again.",
+            "OK",
+            true
         );
 
     }
@@ -777,7 +847,7 @@ async function loadMyApplications() {
 
 
         /* =====================================================
-        INTERVIEW NOTIFICATION
+           INTERVIEW NOTIFICATION
         ===================================================== */
 
         showInterviewNotification(
@@ -832,11 +902,6 @@ async function loadMyApplications() {
 
                 <div class="application-card">
 
-
-                    <!-- =========================
-                         APPLICATION HEADER
-                    ========================== -->
-
                     <div class="application-header">
 
                         <div>
@@ -863,10 +928,6 @@ async function loadMyApplications() {
                         </div>
 
 
-                        <!-- =====================
-                             STATUS
-                        ====================== -->
-
                         <span
                             class="status-badge status-${statusClass}">
 
@@ -879,14 +940,8 @@ async function loadMyApplications() {
                     </div>
 
 
-                    <!-- =========================
-                         APPLICATION INFORMATION
-                    ========================== -->
-
                     <div class="application-info">
 
-
-                        <!-- LOCATION -->
 
                         <div>
 
@@ -906,8 +961,6 @@ async function loadMyApplications() {
                         </div>
 
 
-                        <!-- SALARY -->
-
                         <div>
 
                             <span>
@@ -923,8 +976,6 @@ async function loadMyApplications() {
 
                         </div>
 
-
-                        <!-- APPLIED DATE -->
 
                         <div>
 
@@ -945,8 +996,7 @@ async function loadMyApplications() {
                             </strong>
 
                         </div>
- 
- 
+
 
 ${
     status === "INTERVIEW_SCHEDULED"
@@ -959,8 +1009,6 @@ ${
             </h4>
 
             <div class="interview-info">
-
-                <!-- INTERVIEW DATE -->
 
                 <div>
 
@@ -983,8 +1031,6 @@ ${
                 </div>
 
 
-                <!-- INTERVIEW TIME -->
-
                 <div>
 
                     <span>
@@ -1006,8 +1052,6 @@ ${
                 </div>
 
 
-                <!-- REMARKS -->
-
                 <div>
 
                     <span>
@@ -1019,21 +1063,23 @@ ${
                         ${
                             escapeHtml(
                                 app.remarks ||
-                                     "No remarks"
-                                            )
-                                        }
+                                "No remarks"
+                            )
+                        }
 
-                                    </strong>
+                    </strong>
 
-                                </div>
+                </div>
 
-                            </div>
+            </div>
 
-                        </div>
+        </div>
 
-                    `
-                    : ""
-                }   
+    `
+    : ""
+}
+
+
                     </div>
 
                 </div>
@@ -1135,6 +1181,8 @@ function formatApplicationDate(
 
     }
 }
+
+
 /* =====================================================
    FORMAT INTERVIEW DATE
 ===================================================== */
@@ -1201,6 +1249,7 @@ function formatInterviewTime(
 
     }
 }
+
 
 /* =====================================================
    MY APPLICATIONS PAGE
@@ -1279,7 +1328,6 @@ function escapeHtml(value) {
 }
 
 
-
 /* =====================================================
    PAGE LOAD
 ===================================================== */
@@ -1294,6 +1342,8 @@ window.addEventListener(
 
     }
 );
+
+
 /* =====================================================
    INTERVIEW NOTIFICATION
 ===================================================== */
@@ -1301,8 +1351,6 @@ window.addEventListener(
 function showInterviewNotification(
     applications
 ) {
-
-    // Remove old notification if already exists
 
     const oldNotification =
         document.getElementById(
@@ -1326,8 +1374,6 @@ function showInterviewNotification(
     }
 
 
-    // Find scheduled interviews
-
     const scheduledInterviews =
         applications.filter(
             app =>
@@ -1344,8 +1390,6 @@ function showInterviewNotification(
 
     }
 
-
-    // Create notification
 
     const notification =
         document.createElement(
@@ -1512,8 +1556,6 @@ function showInterviewNotification(
         notificationHTML;
 
 
-    // Add notification before applications
-
     const wrapper =
         document.querySelector(
             ".applications-wrapper"
@@ -1529,4 +1571,153 @@ function showInterviewNotification(
 
     }
 
+}
+
+
+/* ============================================================
+   CUSTOM MODAL
+============================================================ */
+
+function showCustomModal(
+    title,
+    message,
+    buttonText,
+    closeOnly
+) {
+
+    const modal =
+        document.getElementById(
+            "customModal"
+        );
+
+    const modalTitle =
+        document.getElementById(
+            "modalTitle"
+        );
+
+    const modalMessage =
+        document.getElementById(
+            "modalMessage"
+        );
+
+    const actionButton =
+        document.getElementById(
+            "modalActionBtn"
+        );
+
+    const cancelButton =
+        document.getElementById(
+            "modalCancelBtn"
+        );
+
+
+    /* --------------------------------------------------------
+       CHECK MODAL
+    -------------------------------------------------------- */
+
+    if (
+        !modal ||
+        !modalTitle ||
+        !modalMessage ||
+        !actionButton ||
+        !cancelButton
+    ) {
+
+        console.error(
+            "Custom modal elements not found in jobs.html"
+        );
+
+        return;
+    }
+
+
+    /* --------------------------------------------------------
+       SET CONTENT
+    -------------------------------------------------------- */
+
+    modalTitle.innerText =
+        title;
+
+    modalMessage.innerText =
+        message;
+
+    actionButton.innerText =
+        buttonText;
+
+
+    /* --------------------------------------------------------
+       CLOSE ONLY
+       LOGIN / SUCCESS / ERROR
+    -------------------------------------------------------- */
+
+    if (closeOnly) {
+
+        cancelButton.style.display =
+            "none";
+
+
+        actionButton.onclick =
+            function () {
+
+                modal.classList.remove(
+                    "show"
+                );
+
+
+                if (
+                    buttonText === "Login"
+                ) {
+
+                    window.location.href =
+                        "login.html";
+
+                }
+
+            };
+
+    }
+
+
+    /* --------------------------------------------------------
+       RESUME REQUIRED
+    -------------------------------------------------------- */
+
+    else {
+
+        cancelButton.style.display =
+            "inline-block";
+
+
+        actionButton.onclick =
+            function () {
+
+                modal.classList.remove(
+                    "show"
+                );
+
+                window.location.href =
+                    "profile.html";
+
+            };
+
+
+        cancelButton.onclick =
+            function () {
+
+                modal.classList.remove(
+                    "show"
+                );
+
+            };
+
+    }
+
+
+    /* --------------------------------------------------------
+       SHOW MODAL
+    -------------------------------------------------------- */
+
+    modal.classList.add(
+        "show"
+    );
 }

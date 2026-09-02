@@ -27,7 +27,6 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final UserRepository userRepository;
     private final EmailService emailService;
 
-
     public ApplicationServiceImpl(
             ApplicationRepository applicationRepository,
             JobRepository jobRepository,
@@ -39,7 +38,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         this.userRepository = userRepository;
         this.emailService = emailService;
     }
-
 
     // ============================================================
     // APPLY TO JOB - USER
@@ -54,7 +52,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                         .getAuthentication()
                         .getName();
 
-
         User user =
                 userRepository.findByEmail(email)
                         .orElseThrow(() ->
@@ -63,6 +60,21 @@ public class ApplicationServiceImpl implements ApplicationService {
                                 )
                         );
 
+        // --------------------------------------------------------
+        // CHECK RESUME
+        // --------------------------------------------------------
+
+        if (user.getResumeFilePath() == null ||
+                user.getResumeFilePath().isBlank()) {
+
+            throw new IllegalStateException(
+                    "Please upload your resume before applying for a job"
+            );
+        }
+
+        // --------------------------------------------------------
+        // FIND JOB
+        // --------------------------------------------------------
 
         Job job =
                 jobRepository.findById(jobId)
@@ -72,8 +84,9 @@ public class ApplicationServiceImpl implements ApplicationService {
                                 )
                         );
 
-
-        // Prevent duplicate application
+        // --------------------------------------------------------
+        // PREVENT DUPLICATE APPLICATION
+        // --------------------------------------------------------
 
         if (applicationRepository
                 .existsByUserAndJob(user, job)) {
@@ -83,10 +96,12 @@ public class ApplicationServiceImpl implements ApplicationService {
             );
         }
 
+        // --------------------------------------------------------
+        // CREATE APPLICATION
+        // --------------------------------------------------------
 
         Application application =
                 new Application();
-
 
         application.setUser(user);
 
@@ -96,12 +111,10 @@ public class ApplicationServiceImpl implements ApplicationService {
                 ApplicationStatus.APPLIED
         );
 
-
         return applicationRepository.save(
                 application
         );
     }
-
 
     // ============================================================
     // GET ALL APPLICATIONS - ADMIN
@@ -112,7 +125,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return applicationRepository.findAll();
     }
-
 
     // ============================================================
     // GET MY APPLICATIONS - USER
@@ -127,7 +139,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                         .getAuthentication()
                         .getName();
 
-
         User user =
                 userRepository.findByEmail(email)
                         .orElseThrow(() ->
@@ -136,12 +147,10 @@ public class ApplicationServiceImpl implements ApplicationService {
                                 )
                         );
 
-
         return applicationRepository.findByUser(
                 user
         );
     }
-
 
     // ============================================================
     // GET APPLICATION BY ID - ADMIN
@@ -159,7 +168,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                         )
                 );
     }
-
 
     // ============================================================
     // UPDATE APPLICATION STATUS - ADMIN
@@ -183,7 +191,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                                 )
                         );
 
-
         // --------------------------------------------------------
         // VALIDATE STATUS
         // --------------------------------------------------------
@@ -195,13 +202,11 @@ public class ApplicationServiceImpl implements ApplicationService {
             );
         }
 
-
         // --------------------------------------------------------
         // UPDATE STATUS
         // --------------------------------------------------------
 
         application.setStatus(status);
-
 
         // --------------------------------------------------------
         // SAVE APPLICATION
@@ -212,7 +217,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                         application
                 );
 
-
         // --------------------------------------------------------
         // GET CANDIDATE DETAILS
         // --------------------------------------------------------
@@ -220,18 +224,14 @@ public class ApplicationServiceImpl implements ApplicationService {
         String candidateEmail =
                 application.getUser().getEmail();
 
-
         String candidateName =
                 application.getUser().getFullName();
-
 
         String jobTitle =
                 application.getJob().getTitle();
 
-
         String company =
                 application.getJob().getCompany();
-
 
         // --------------------------------------------------------
         // EMAIL SUBJECT & MESSAGE
@@ -241,7 +241,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         String message = null;
 
-
         // ========================================================
         // INTERVIEWED
         // ========================================================
@@ -250,7 +249,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             subject =
                     "Interview Completed - Job Portal AI";
-
 
             message =
 
@@ -278,7 +276,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                     "Job Portal AI";
         }
 
-
         // ========================================================
         // OFFERED
         // ========================================================
@@ -287,7 +284,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             subject =
                     "Job Offer - Job Portal AI";
-
 
             message =
 
@@ -316,7 +312,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                     "Best Regards,\n" +
                     "Job Portal AI";
         }
-
 
         // ========================================================
         // HIRED
@@ -357,10 +352,8 @@ public class ApplicationServiceImpl implements ApplicationService {
                     company
             );
 
-
             subject =
                     "Congratulations! You are Hired - Job Portal AI";
-
 
             message =
 
@@ -389,7 +382,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                     "Best Regards,\n" +
                     "Job Portal AI";
 
-
             System.out.println(
                     "Subject: " +
                     subject
@@ -404,7 +396,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             );
         }
 
-
         // ========================================================
         // REJECTED
         // ========================================================
@@ -413,7 +404,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
             subject =
                     "Application Update - Job Portal AI";
-
 
             message =
 
@@ -443,7 +433,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                     "Job Portal AI";
         }
 
-
         // ========================================================
         // SEND EMAIL
         // ========================================================
@@ -464,19 +453,16 @@ public class ApplicationServiceImpl implements ApplicationService {
                     subject
             );
 
-
             emailService.sendEmail(
                     candidateEmail,
                     subject,
                     message
             );
 
-
             System.out.println(
                     "EMAIL SERVICE CALLED SUCCESSFULLY"
             );
         }
-
 
         // --------------------------------------------------------
         // RETURN APPLICATION
@@ -484,7 +470,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         return savedApplication;
     }
-
 
     // ============================================================
     // SCHEDULE INTERVIEW - ADMIN
@@ -495,7 +480,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             Long applicationId,
             LocalDateTime interviewDate,
             String remarks) {
-
 
         // --------------------------------------------------------
         // FIND APPLICATION
@@ -510,7 +494,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                                 )
                         );
 
-
         // --------------------------------------------------------
         // VALIDATE INTERVIEW DATE
         // --------------------------------------------------------
@@ -521,7 +504,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                     "Interview date and time are required"
             );
         }
-
 
         // --------------------------------------------------------
         // CHECK FUTURE DATE
@@ -535,7 +517,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             );
         }
 
-
         // --------------------------------------------------------
         // CHECK APPLICATION STATUS
         // --------------------------------------------------------
@@ -548,7 +529,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             );
         }
 
-
         // --------------------------------------------------------
         // SET INTERVIEW DATE
         // --------------------------------------------------------
@@ -556,7 +536,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setInterviewDate(
                 interviewDate
         );
-
 
         // --------------------------------------------------------
         // SET REMARKS
@@ -573,7 +552,6 @@ public class ApplicationServiceImpl implements ApplicationService {
             );
         }
 
-
         // --------------------------------------------------------
         // CHANGE STATUS
         // --------------------------------------------------------
@@ -581,7 +559,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setStatus(
                 ApplicationStatus.INTERVIEW_SCHEDULED
         );
-
 
         // --------------------------------------------------------
         // SAVE APPLICATION
@@ -592,7 +569,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                         application
                 );
 
-
         // --------------------------------------------------------
         // GET CANDIDATE DETAILS
         // --------------------------------------------------------
@@ -600,22 +576,17 @@ public class ApplicationServiceImpl implements ApplicationService {
         String candidateEmail =
                 application.getUser().getEmail();
 
-
         String candidateName =
                 application.getUser().getFullName();
-
 
         String jobTitle =
                 application.getJob().getTitle();
 
-
         String company =
                 application.getJob().getCompany();
 
-
         String emailRemarks =
                 application.getRemarks();
-
 
         // --------------------------------------------------------
         // FORMAT DATE & TIME
@@ -626,24 +597,20 @@ public class ApplicationServiceImpl implements ApplicationService {
                         "dd MMM yyyy"
                 );
 
-
         DateTimeFormatter timeFormatter =
                 DateTimeFormatter.ofPattern(
                         "hh:mm a"
                 );
-
 
         String formattedDate =
                 interviewDate.format(
                         dateFormatter
                 );
 
-
         String formattedTime =
                 interviewDate.format(
                         timeFormatter
                 );
-
 
         // --------------------------------------------------------
         // CREATE INTERVIEW EMAIL
@@ -690,7 +657,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                 "Best Regards,\n" +
                 "Job Portal AI";
 
-
         // --------------------------------------------------------
         // SEND INTERVIEW EMAIL
         // --------------------------------------------------------
@@ -704,7 +670,6 @@ public class ApplicationServiceImpl implements ApplicationService {
                 emailMessage
 
         );
-
 
         // --------------------------------------------------------
         // RETURN SAVED APPLICATION
