@@ -876,3 +876,1109 @@ body {
     min-width: 150px;
     box-sizing: border-box;
 }
+/* =========================================================
+   JOB MANAGEMENT
+========================================================= */
+
+.job-management {
+    margin-bottom: 70px;
+}
+
+.job-management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.btn-add-job {
+    min-width: 140px;
+    height: 42px;
+
+    padding: 0 20px;
+
+    border: none;
+    border-radius: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #38bdf8,
+        #6366f1
+    );
+
+    color: white;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+.btn-add-job:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(56, 189, 248, 0.25);
+}
+
+
+/* =========================================================
+   JOB FORM
+========================================================= */
+
+.job-form {
+    width: 100%;
+    max-width: 750px;
+
+    margin: 0 auto;
+
+    padding: 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #17213a,
+            #111827
+        );
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+.job-form h2 {
+    margin-bottom: 25px;
+
+    font-size: 28px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #38bdf8,
+            #8b5cf6
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+.job-form-group {
+    margin-bottom: 18px;
+}
+
+.job-form-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #38bdf8;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+.job-form-group input,
+.job-form-group textarea {
+    width: 100%;
+
+    padding: 13px 15px;
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    color: white;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.25s;
+}
+
+.job-form-group input:focus,
+.job-form-group textarea:focus {
+    border-color: #38bdf8;
+
+    box-shadow:
+        0 0 0 2px
+        rgba(56, 189, 248, 0.10);
+}
+
+.job-form-group textarea {
+    min-height: 130px;
+
+    resize: vertical;
+}
+
+.job-form-group input::placeholder,
+.job-form-group textarea::placeholder {
+    color: #94a3b8;
+}
+
+
+/* =========================================================
+   JOB FORM BUTTONS
+========================================================= */
+
+.job-form-buttons {
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 25px;
+}
+
+.btn-save-job,
+.btn-cancel-job {
+    min-width: 120px;
+
+    height: 40px;
+
+    padding: 0 18px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+.btn-save-job {
+    background: linear-gradient(
+        90deg,
+        #22c55e,
+        #16a34a
+    );
+}
+
+.btn-cancel-job {
+    background: #475569;
+}
+
+.btn-save-job:hover,
+.btn-cancel-job:hover {
+    transform: translateY(-2px);
+
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   JOB LIST
+========================================================= */
+
+.job-management-list {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(300px, 1fr));
+
+    gap: 20px;
+
+    margin-top: 30px;
+}
+
+.admin-job-card {
+    padding: 25px;
+
+    background:
+        rgba(255, 255, 255, 0.05);
+
+    border:
+        1px solid
+        rgba(255, 255, 255, 0.08);
+
+    border-radius: 16px;
+
+    transition: 0.25s;
+}
+
+.admin-job-card:hover {
+    transform: translateY(-5px);
+
+    border-color: #38bdf8;
+}
+
+.admin-job-card h3 {
+    color: #38bdf8;
+
+    margin-bottom: 12px;
+}
+
+.admin-job-card p {
+    margin-bottom: 7px;
+
+    color: #cbd5e1;
+
+    font-size: 14px;
+}
+
+.admin-job-actions {
+    display: flex;
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+.btn-edit-job,
+.btn-delete-job {
+    min-width: 85px;
+
+    height: 35px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    color: white;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.btn-edit-job {
+    background: #6366f1;
+}
+
+.btn-delete-job {
+    background: #ef4444;
+}
+
+.btn-edit-job:hover,
+.btn-delete-job:hover {
+    transform: translateY(-2px);
+
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .job-management-header {
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+    .btn-add-job {
+        width: 100%;
+    }
+
+    .job-form {
+        padding: 20px;
+    }
+
+    .job-form-buttons {
+        flex-direction: column;
+    }
+
+    .btn-save-job,
+    .btn-cancel-job {
+        width: 100%;
+    }
+
+}
+/* =========================================================
+   ADD / EDIT JOB MODAL
+========================================================= */
+
+.job-modal {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.70);
+
+    backdrop-filter: blur(8px);
+
+    z-index: 5000;
+}
+
+
+/* =========================================================
+   JOB FORM CARD
+========================================================= */
+
+.job-form {
+    position: relative;
+
+    width: 100%;
+    max-width: 600px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #17213a,
+            #111827
+        );
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.12);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.55);
+}
+
+
+/* =========================================================
+   JOB FORM TITLE
+========================================================= */
+
+.job-form h2 {
+
+    margin-bottom: 25px;
+
+    font-size: 27px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #38bdf8,
+            #8b5cf6
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.job-form-close {
+
+    position: absolute;
+
+    top: 15px;
+    right: 18px;
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, 0.08);
+
+    color: white;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+
+.job-form-close:hover {
+
+    background: #ef4444;
+
+    transform: rotate(90deg);
+
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.job-form-group {
+
+    margin-bottom: 17px;
+}
+
+
+.job-form-group label {
+
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #38bdf8;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.job-form-group input,
+.job-form-group textarea {
+
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: 1px solid
+        rgba(255, 255, 255, 0.10);
+
+    border-radius: 10px;
+
+    background:
+        rgba(255, 255, 255, 0.06);
+
+    color: white;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.25s;
+}
+
+
+.job-form-group input:focus,
+.job-form-group textarea:focus {
+
+    border-color: #38bdf8;
+
+    box-shadow:
+        0 0 0 2px
+        rgba(56, 189, 248, 0.10);
+}
+
+
+.job-form-group input::placeholder,
+.job-form-group textarea::placeholder {
+
+    color: #94a3b8;
+}
+
+
+.job-form-group textarea {
+
+    min-height: 100px;
+
+    resize: vertical;
+}
+
+
+/* =========================================================
+   FORM BUTTONS
+========================================================= */
+
+.job-form-buttons {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    margin-top: 22px;
+}
+
+
+.btn-save-job,
+.btn-cancel-job {
+
+    height: 40px;
+
+    padding: 0 22px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.25s;
+}
+
+
+.btn-save-job {
+
+    background:
+        linear-gradient(
+            90deg,
+            #22c55e,
+            #16a34a
+        );
+}
+
+
+.btn-cancel-job {
+
+    background: #475569;
+}
+
+
+.btn-save-job:hover,
+.btn-cancel-job:hover {
+
+    transform: translateY(-2px);
+
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .job-modal {
+
+        padding: 15px;
+    }
+
+    .job-form {
+
+        padding: 22px;
+
+        max-height: 92vh;
+    }
+
+    .job-form-buttons {
+
+        flex-direction: column;
+    }
+
+    .btn-save-job,
+    .btn-cancel-job {
+
+        width: 100%;
+    }
+
+}/* =========================================================
+   JOB ADD / EDIT MODAL
+========================================================= */
+
+.job-modal {
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: 20px;
+
+    background: rgba(0, 0, 0, 0.72);
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    z-index: 5000;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: 0.25s ease;
+}
+
+
+/* MODAL OPEN */
+
+.job-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================================================
+   MODAL CARD
+========================================================= */
+
+.job-modal-content {
+
+    position: relative;
+
+    width: 100%;
+
+    max-width: 620px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 32px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #17213a,
+            #111827
+        );
+
+    border: 1px solid rgba(56, 189, 248, 0.20);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.55),
+        0 0 40px rgba(56, 189, 248, 0.08);
+
+    transform: translateY(20px) scale(0.97);
+
+    transition: 0.25s ease;
+}
+
+
+/* CARD ANIMATION */
+
+.job-modal.show .job-modal-content {
+
+    transform: translateY(0) scale(1);
+
+}
+
+
+/* =========================================================
+   MODAL TITLE
+========================================================= */
+
+.job-modal-content h2 {
+
+    margin: 0 45px 25px 0;
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+    background:
+        linear-gradient(
+            90deg,
+            #38bdf8,
+            #8b5cf6
+        );
+
+    -webkit-background-clip: text;
+
+    background-clip: text;
+
+    color: transparent;
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+========================================================= */
+
+.job-modal-close {
+
+    position: absolute;
+
+    top: 18px;
+
+    right: 18px;
+
+    width: 38px;
+
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    color: white;
+
+    font-size: 24px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+
+.job-modal-close:hover {
+
+    background: #ef4444;
+
+    transform: rotate(90deg);
+
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.job-form-group {
+
+    margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   LABEL
+========================================================= */
+
+.job-form-group label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #38bdf8;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   INPUT + TEXTAREA
+========================================================= */
+
+.job-form-group input,
+.job-form-group textarea {
+
+    width: 100%;
+
+    padding: 13px 15px;
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    color: white;
+
+    font-family: 'Segoe UI', sans-serif;
+
+    font-size: 14px;
+
+    transition: 0.25s ease;
+}
+
+
+/* INPUT HEIGHT */
+
+.job-form-group input {
+
+    height: 48px;
+}
+
+
+/* TEXTAREA */
+
+.job-form-group textarea {
+
+    min-height: 110px;
+
+    resize: vertical;
+
+}
+
+
+/* PLACEHOLDER */
+
+.job-form-group input::placeholder,
+.job-form-group textarea::placeholder {
+
+    color: #94a3b8;
+
+}
+
+
+/* FOCUS */
+
+.job-form-group input:focus,
+.job-form-group textarea:focus {
+
+    border-color: #38bdf8;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    box-shadow:
+        0 0 0 3px rgba(56, 189, 248, 0.10);
+}
+
+
+/* =========================================================
+   FORM ACTION BUTTONS
+========================================================= */
+
+.job-form-actions {
+
+    display: flex;
+
+    gap: 12px;
+
+    margin-top: 25px;
+}
+
+
+/* SAVE JOB */
+
+.btn-save-job {
+
+    flex: 1;
+
+    height: 46px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #22c55e,
+            #16a34a
+        );
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+
+.btn-save-job:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(34, 197, 94, 0.25);
+
+}
+
+
+/* CANCEL */
+
+.btn-cancel-job {
+
+    flex: 1;
+
+    height: 46px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #475569;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+
+.btn-cancel-job:hover {
+
+    background: #64748b;
+
+    transform: translateY(-2px);
+
+}
+
+
+/* =========================================================
+   ADD NEW JOB BUTTON
+========================================================= */
+
+.job-management-header {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    margin-bottom: 20px;
+}
+
+
+.btn-add-job {
+
+    height: 45px;
+
+    padding: 0 22px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #38bdf8,
+            #8b5cf6
+        );
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+
+    box-shadow:
+        0 8px 20px rgba(59, 130, 246, 0.18);
+}
+
+
+.btn-add-job:hover {
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 25px rgba(59, 130, 246, 0.28);
+
+}
+
+
+/* =========================================================
+   MODAL SCROLLBAR
+========================================================= */
+
+.job-modal-content::-webkit-scrollbar {
+
+    width: 6px;
+}
+
+
+.job-modal-content::-webkit-scrollbar-thumb {
+
+    background: #3b82f6;
+
+    border-radius: 10px;
+}
+
+
+.job-modal-content::-webkit-scrollbar-track {
+
+    background: transparent;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+    .job-modal {
+
+        padding: 15px;
+
+    }
+
+
+    .job-modal-content {
+
+        max-width: 100%;
+
+        padding: 25px;
+
+        border-radius: 16px;
+
+    }
+
+
+    .job-modal-content h2 {
+
+        font-size: 24px;
+
+    }
+
+
+    .job-form-actions {
+
+        flex-direction: column;
+
+    }
+
+
+    .btn-save-job,
+    .btn-cancel-job {
+
+        width: 100%;
+
+    }
+
+}

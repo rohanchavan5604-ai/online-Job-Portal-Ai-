@@ -33,6 +33,8 @@ document.addEventListener(
 
         await loadApplications();
 
+        await loadAdminJobs();
+
         await loadUsers();
 
     }
@@ -345,8 +347,7 @@ async function loadApplications() {
                 const statusClass =
                     status
                         .toLowerCase()
-                        
-                 .replace(/_/g, "-");
+                        .replace(/_/g, "-");
 
 
                 const actionButtons =
@@ -713,16 +714,20 @@ async function updateApplicationStatus(
     }
 
 
-            const confirmAction = await showConfirmPopup(
+    const confirmAction =
+        await showConfirmPopup(
             "Change Application Status?",
             "Are you sure you want to change the status to " +
             formatStatus(status) +
             "?"
         );
 
-        if (!confirmAction) {
-            return;
-        }
+
+    if (!confirmAction) {
+
+        return;
+
+    }
 
 
     try {
@@ -743,12 +748,13 @@ async function updateApplicationStatus(
 
                     },
 
-                    body: JSON.stringify({
+                    body:
+                        JSON.stringify({
 
-                        status:
-                            status
+                            status:
+                                status
 
-                    })
+                        })
 
                 }
             );
@@ -756,6 +762,12 @@ async function updateApplicationStatus(
 
         const responseText =
             await response.text();
+
+
+        console.log(
+            "Status update response:",
+            responseText
+        );
 
 
         if (!response.ok) {
@@ -768,13 +780,7 @@ async function updateApplicationStatus(
         }
 
 
-        console.log(
-            "Status update response:",
-            responseText
-        );
-
-
-            showSuccessPopup(
+        showSuccessPopup(
             "Application status updated successfully."
         );
 
@@ -917,10 +923,6 @@ async function scheduleInterview(
             </h2>
 
 
-            <!-- =================================================
-                 DATE
-                 ================================================= -->
-
             <label style="
                 display:block;
                 margin-bottom:8px;
@@ -951,10 +953,6 @@ async function scheduleInterview(
             >
 
 
-            <!-- =================================================
-                 TIME
-                 ================================================= -->
-
             <label style="
                 display:block;
                 margin-bottom:8px;
@@ -984,10 +982,6 @@ async function scheduleInterview(
                 "
             >
 
-
-            <!-- =================================================
-                 REMARKS
-                 ================================================= -->
 
             <label style="
                 display:block;
@@ -1020,10 +1014,6 @@ async function scheduleInterview(
                 "
             ></textarea>
 
-
-            <!-- =================================================
-                 BUTTONS
-                 ================================================= -->
 
             <div style="
                 display:flex;
@@ -1083,10 +1073,6 @@ async function scheduleInterview(
         modal
     );
 
-
-    // ========================================================
-    // GET INPUT ELEMENTS
-    // ========================================================
 
     const dateInput =
         document.getElementById(
@@ -1157,7 +1143,7 @@ async function scheduleInterview(
 
 
     // ========================================================
-    // CANCEL BUTTON
+    // CANCEL
     // ========================================================
 
     cancelButton.onclick =
@@ -1169,7 +1155,7 @@ async function scheduleInterview(
 
 
     // ========================================================
-    // CLICK OUTSIDE MODAL
+    // CLICK OUTSIDE
     // ========================================================
 
     modal.addEventListener(
@@ -1189,7 +1175,7 @@ async function scheduleInterview(
 
 
     // ========================================================
-    // SCHEDULE BUTTON
+    // SCHEDULE
     // ========================================================
 
     scheduleButton.onclick =
@@ -1207,10 +1193,6 @@ async function scheduleInterview(
                 remarksInput.value.trim();
 
 
-            // --------------------------------------------------
-            // DATE VALIDATION
-            // --------------------------------------------------
-
             if (!date) {
 
                 alert(
@@ -1221,10 +1203,6 @@ async function scheduleInterview(
 
             }
 
-
-            // --------------------------------------------------
-            // TIME VALIDATION
-            // --------------------------------------------------
 
             if (!time) {
 
@@ -1237,19 +1215,11 @@ async function scheduleInterview(
             }
 
 
-            // --------------------------------------------------
-            // CREATE LOCAL DATE TIME
-            // --------------------------------------------------
-
             const interviewDate =
                 date +
                 "T" +
                 time;
 
-
-            // --------------------------------------------------
-            // CHECK FUTURE DATE
-            // --------------------------------------------------
 
             const selectedDate =
                 new Date(
@@ -1285,10 +1255,6 @@ async function scheduleInterview(
             }
 
 
-            // --------------------------------------------------
-            // DISABLE BUTTON
-            // --------------------------------------------------
-
             scheduleButton.disabled =
                 true;
 
@@ -1298,10 +1264,6 @@ async function scheduleInterview(
 
 
             try {
-
-                // ==============================================
-                // SEND REQUEST
-                // ==============================================
 
                 const response =
                     await fetch(
@@ -1335,10 +1297,6 @@ async function scheduleInterview(
                     );
 
 
-                // ==============================================
-                // READ RESPONSE AS TEXT
-                // ==============================================
-
                 const responseText =
                     await response.text();
 
@@ -1354,10 +1312,6 @@ async function scheduleInterview(
                     responseText
                 );
 
-
-                // ==============================================
-                // SERVER ERROR
-                // ==============================================
 
                 if (!response.ok) {
 
@@ -1401,15 +1355,13 @@ async function scheduleInterview(
                 }
 
 
-                // ==============================================
-                // SUCCESS
-                // ==============================================
+                modal.remove();
 
-               modal.remove();
 
                 showSuccessPopup(
                     "Interview scheduled successfully."
                 );
+
 
                 await loadApplications();
 
@@ -2082,13 +2034,17 @@ async function loadAdminJobs() {
     }
 
 
-    const container =
+    // IMPORTANT:
+    // HTML मध्ये adminJobsTableBody आहे.
+    // त्यामुळे table body हाच वापरला आहे.
+
+    const table =
         document.getElementById(
-            "adminJobsContainer"
+            "adminJobsTableBody"
         );
 
 
-    if (!container) {
+    if (!table) {
 
         return;
 
@@ -2128,7 +2084,7 @@ async function loadAdminJobs() {
             await response.json();
 
 
-        container.innerHTML = "";
+        table.innerHTML = "";
 
 
         if (
@@ -2136,8 +2092,21 @@ async function loadAdminJobs() {
             jobs.length === 0
         ) {
 
-            container.innerHTML =
-                "<p class='no-action'>No jobs available.</p>";
+            table.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="6"
+                        class="no-action">
+
+                        No jobs available.
+
+                    </td>
+
+                </tr>
+
+            `;
 
             return;
 
@@ -2147,79 +2116,93 @@ async function loadAdminJobs() {
         jobs.forEach(
             job => {
 
-                container.innerHTML += `
+                table.innerHTML += `
 
-                    <div class="job-card">
+                    <tr>
 
+                        <td>
 
-                        <h3>
+                            ${job.id ?? "N/A"}
 
-                            ${escapeHtml(
-                                job.title
-                            )}
-
-                        </h3>
+                        </td>
 
 
-                        <p>
+                        <td>
 
                             ${escapeHtml(
-                                job.description
+                                job.title ||
+                                "N/A"
                             )}
 
-                        </p>
+                        </td>
 
 
-                        <p>
-
-                            <b>
-                                Company:
-                            </b>
+                        <td>
 
                             ${escapeHtml(
-                                job.company
+                                job.company ||
+                                "N/A"
                             )}
 
-                        </p>
+                        </td>
 
 
-                        <p>
-
-                            <b>
-                                Location:
-                            </b>
+                        <td>
 
                             ${escapeHtml(
-                                job.location
+                                job.location ||
+                                "N/A"
                             )}
 
-                        </p>
+                        </td>
 
 
-                        <p>
+                        <td>
 
-                            <b>
-                                Salary:
-                            </b>
+                            ${
+                                job.salary != null
+                                    ? "₹" + job.salary
+                                    : "N/A"
+                            }
 
-                            ₹${job.salary ?? "N/A"}
-
-                        </p>
-
-
-                        <button
-                            class="btn-reject"
-                            onclick="deleteJob(
-                                ${job.id}
-                            )"
-                        >
-
-                            Delete Job
-
-                        </button>
+                        </td>
 
 
-                    </div>
+                        <td>
+
+                            <div
+                                class="action-buttons">
+
+
+                                <button
+                                    type="button"
+                                    class="btn-view"
+                                    onclick="editJob(
+                                        ${job.id}
+                                    )">
+
+                                    Edit
+
+                                </button>
+
+
+                                <button
+                                    type="button"
+                                    class="btn-reject"
+                                    onclick="deleteJob(
+                                        ${job.id}
+                                    )">
+
+                                    Delete
+
+                                </button>
+
+
+                            </div>
+
+                        </td>
+
+                    </tr>
 
                 `;
 
@@ -2235,8 +2218,697 @@ async function loadAdminJobs() {
         );
 
 
-        container.innerHTML =
-            "<p>Failed to load jobs</p>";
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    style="color:#ef4444;">
+
+                    Failed to load jobs
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+}
+
+
+// ============================================================
+// OPEN ADD JOB MODAL
+// ============================================================
+
+function openJobModal() {
+
+    if (!checkAdmin()) {
+
+        return;
+
+    }
+
+
+    const modal =
+        document.getElementById(
+            "jobModal"
+        );
+
+
+    const form =
+        document.getElementById(
+            "jobForm"
+        );
+
+
+    const title =
+        document.getElementById(
+            "jobModalTitle"
+        );
+
+
+    const jobId =
+        document.getElementById(
+            "jobId"
+        );
+
+
+    const jobTitle =
+        document.getElementById(
+            "jobTitle"
+        );
+
+
+    const jobDescription =
+        document.getElementById(
+            "jobDescription"
+        );
+
+
+    const jobCompany =
+        document.getElementById(
+            "jobCompany"
+        );
+
+
+    const jobLocation =
+        document.getElementById(
+            "jobLocation"
+        );
+
+
+    const jobSalary =
+        document.getElementById(
+            "jobSalary"
+        );
+
+
+    if (!modal) {
+
+        alert(
+            "Job modal not found in HTML"
+        );
+
+        return;
+
+    }
+
+
+    if (title) {
+
+        title.textContent =
+            "Add New Job";
+
+    }
+
+
+    if (form) {
+
+        form.reset();
+
+    }
+
+
+    if (jobId) {
+
+        jobId.value = "";
+
+    }
+
+
+    if (jobTitle) {
+
+        jobTitle.value = "";
+
+    }
+
+
+    if (jobDescription) {
+
+        jobDescription.value = "";
+
+    }
+
+
+    if (jobCompany) {
+
+        jobCompany.value = "";
+
+    }
+
+
+    if (jobLocation) {
+
+        jobLocation.value = "";
+
+    }
+
+
+    if (jobSalary) {
+
+        jobSalary.value = "";
+
+    }
+
+
+    applyJobModalStyles();
+
+
+    modal.classList.add(
+        "show"
+    );
+
+}
+
+
+// ============================================================
+// CLOSE JOB MODAL
+// ============================================================
+
+function closeJobModal() {
+
+    const modal =
+        document.getElementById(
+            "jobModal"
+        );
+
+
+    if (modal) {
+
+        modal.classList.remove(
+            "show"
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// EDIT JOB
+// ============================================================
+
+async function editJob(
+    id
+) {
+
+    if (!checkAdmin()) {
+
+        return;
+
+    }
+
+
+    const token =
+        localStorage.getItem("token");
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/jobs/${id}`,
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    }
+
+                }
+            );
+
+
+        if (!response.ok) {
+
+            const errorText =
+                await response.text();
+
+
+            throw new Error(
+                errorText ||
+                "Failed to load job"
+            );
+
+        }
+
+
+        const job =
+            await response.json();
+
+
+        const modal =
+            document.getElementById(
+                "jobModal"
+            );
+
+
+        const title =
+            document.getElementById(
+                "jobModalTitle"
+            );
+
+
+        const jobId =
+            document.getElementById(
+                "jobId"
+            );
+
+
+        const jobTitle =
+            document.getElementById(
+                "jobTitle"
+            );
+
+
+        const jobDescription =
+            document.getElementById(
+                "jobDescription"
+            );
+
+
+        const jobCompany =
+            document.getElementById(
+                "jobCompany"
+            );
+
+
+        const jobLocation =
+            document.getElementById(
+                "jobLocation"
+            );
+
+
+        const jobSalary =
+            document.getElementById(
+                "jobSalary"
+            );
+
+
+        if (!modal) {
+
+            alert(
+                "Job modal not found in HTML"
+            );
+
+            return;
+
+        }
+
+
+        if (title) {
+
+            title.textContent =
+                "Edit Job";
+
+        }
+
+
+        if (jobId) {
+
+            jobId.value =
+                job.id ?? "";
+
+        }
+
+
+        if (jobTitle) {
+
+            jobTitle.value =
+                job.title ?? "";
+
+        }
+
+
+        if (jobDescription) {
+
+            jobDescription.value =
+                job.description ?? "";
+
+        }
+
+
+        if (jobCompany) {
+
+            jobCompany.value =
+                job.company ?? "";
+
+        }
+
+
+        if (jobLocation) {
+
+            jobLocation.value =
+                job.location ?? "";
+
+        }
+
+
+        if (jobSalary) {
+
+            jobSalary.value =
+                job.salary ?? "";
+
+        }
+
+
+        applyJobModalStyles();
+
+
+        modal.classList.add(
+            "show"
+        );
+
+    }
+    catch (error) {
+
+        console.error(
+            "Edit job error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Failed to load job"
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// SAVE JOB
+// ADD + UPDATE
+// ============================================================
+
+async function saveJob(
+    event
+) {
+
+    event.preventDefault();
+
+
+    if (!checkAdmin()) {
+
+        return;
+
+    }
+
+
+    const token =
+        localStorage.getItem("token");
+
+
+    const jobId =
+        document.getElementById(
+            "jobId"
+        ).value.trim();
+
+
+    const title =
+        document.getElementById(
+            "jobTitle"
+        ).value.trim();
+
+
+    const description =
+        document.getElementById(
+            "jobDescription"
+        ).value.trim();
+
+
+    const company =
+        document.getElementById(
+            "jobCompany"
+        ).value.trim();
+
+
+    const location =
+        document.getElementById(
+            "jobLocation"
+        ).value.trim();
+
+
+    const salaryValue =
+        document.getElementById(
+            "jobSalary"
+        ).value.trim();
+
+
+    if (!title) {
+
+        alert(
+            "Please enter job title."
+        );
+
+        return;
+
+    }
+
+
+    if (!description) {
+
+        alert(
+            "Please enter job description."
+        );
+
+        return;
+
+    }
+
+
+    if (!company) {
+
+        alert(
+            "Please enter company name."
+        );
+
+        return;
+
+    }
+
+
+    if (!location) {
+
+        alert(
+            "Please enter location."
+        );
+
+        return;
+
+    }
+
+
+    let salary = null;
+
+
+    if (salaryValue !== "") {
+
+        salary =
+            Number(
+                salaryValue
+            );
+
+
+        if (
+            isNaN(salary) ||
+            salary < 0
+        ) {
+
+            alert(
+                "Please enter a valid salary."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    const jobData = {
+
+        title:
+            title,
+
+        description:
+            description,
+
+        company:
+            company,
+
+        location:
+            location,
+
+        salary:
+            salary
+
+    };
+
+
+    const isEdit =
+        jobId !== "";
+
+
+    const url =
+        isEdit
+            ? `/api/jobs/${jobId}`
+            : "/api/jobs";
+
+
+    const method =
+        isEdit
+            ? "PUT"
+            : "POST";
+
+
+    const submitButton =
+        document.querySelector(
+            "#jobForm button[type='submit']"
+        );
+
+
+    if (submitButton) {
+
+        submitButton.disabled =
+            true;
+
+
+        submitButton.textContent =
+            isEdit
+                ? "Updating..."
+                : "Saving...";
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                url,
+                {
+
+                    method:
+                        method,
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token,
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            jobData
+                        )
+
+                }
+            );
+
+
+        const responseText =
+            await response.text();
+
+
+        if (!response.ok) {
+
+            let errorMessage =
+                isEdit
+                    ? "Failed to update job"
+                    : "Failed to create job";
+
+
+            if (
+                responseText &&
+                responseText.trim()
+            ) {
+
+                try {
+
+                    const errorData =
+                        JSON.parse(
+                            responseText
+                        );
+
+
+                    errorMessage =
+                        errorData.message ||
+                        errorData.error ||
+                        responseText;
+
+                }
+                catch (e) {
+
+                    errorMessage =
+                        responseText;
+
+                }
+
+            }
+
+
+            throw new Error(
+                errorMessage
+            );
+
+        }
+
+
+        closeJobModal();
+
+
+        showSuccessPopup(
+            isEdit
+                ? "Job updated successfully."
+                : "Job created successfully."
+        );
+
+
+        await loadAdminJobs();
+
+        await loadDashboard();
+
+    }
+    catch (error) {
+
+        console.error(
+            "Save job error:",
+            error
+        );
+
+
+        alert(
+            error.message ||
+            "Server error while saving job"
+        );
+
+    }
+    finally {
+
+        if (submitButton) {
+
+            submitButton.disabled =
+                false;
+
+
+            submitButton.textContent =
+                "Save Job";
+
+        }
 
     }
 
@@ -2274,7 +2946,8 @@ async function deleteJob(
 
 
     const confirmDelete =
-        confirm(
+        await showConfirmPopup(
+            "Delete Job?",
             "Are you sure you want to delete this job?"
         );
 
@@ -2306,27 +2979,58 @@ async function deleteJob(
             );
 
 
+        const responseText =
+            await response.text();
+
+
         if (!response.ok) {
 
-            const errorText =
-                await response.text();
+            let errorMessage =
+                "Failed to delete job";
+
+
+            if (
+                responseText &&
+                responseText.trim()
+            ) {
+
+                try {
+
+                    const errorData =
+                        JSON.parse(
+                            responseText
+                        );
+
+
+                    errorMessage =
+                        errorData.message ||
+                        errorData.error ||
+                        responseText;
+
+                }
+                catch (e) {
+
+                    errorMessage =
+                        responseText;
+
+                }
+
+            }
 
 
             throw new Error(
-                errorText ||
-                "Failed to delete job"
+                errorMessage
             );
 
         }
 
 
-        alert(
+        showSuccessPopup(
             "Job deleted successfully."
         );
 
 
         await loadAdminJobs();
-
 
         await loadDashboard();
 
@@ -2345,6 +3049,510 @@ async function deleteJob(
         );
 
     }
+
+}
+
+
+// ============================================================
+// JOB MODAL STYLES
+// FALLBACK STYLES
+// ============================================================
+
+function applyJobModalStyles() {
+
+    const modal =
+        document.getElementById(
+            "jobModal"
+        );
+
+
+    if (!modal) {
+
+        return;
+
+    }
+
+
+    modal.style.position =
+        "fixed";
+
+
+    modal.style.inset =
+        "0";
+
+
+    modal.style.display =
+        "flex";
+
+
+    modal.style.justifyContent =
+        "center";
+
+
+    modal.style.alignItems =
+        "center";
+
+
+    modal.style.padding =
+        "20px";
+
+
+    modal.style.background =
+        "rgba(0, 0, 0, 0.70)";
+
+
+    modal.style.backdropFilter =
+        "blur(8px)";
+
+
+    modal.style.zIndex =
+        "5000";
+
+
+    const content =
+        modal.querySelector(
+            ".job-modal-content"
+        );
+
+
+    if (!content) {
+
+        return;
+
+    }
+
+
+    content.style.position =
+        "relative";
+
+
+    content.style.width =
+        "100%";
+
+
+    content.style.maxWidth =
+        "560px";
+
+
+    content.style.maxHeight =
+        "90vh";
+
+
+    content.style.overflowY =
+        "auto";
+
+
+    content.style.padding =
+        "32px";
+
+
+    content.style.background =
+        "linear-gradient(145deg,#17213a,#111827)";
+
+
+    content.style.border =
+        "1px solid rgba(255,255,255,0.10)";
+
+
+    content.style.borderRadius =
+        "20px";
+
+
+    content.style.boxShadow =
+        "0 30px 80px rgba(0,0,0,0.50)";
+
+
+    content.style.boxSizing =
+        "border-box";
+
+
+    const closeButton =
+        modal.querySelector(
+            ".job-modal-close"
+        );
+
+
+    if (closeButton) {
+
+        closeButton.style.position =
+            "absolute";
+
+
+        closeButton.style.top =
+            "15px";
+
+
+        closeButton.style.right =
+            "18px";
+
+
+        closeButton.style.width =
+            "38px";
+
+
+        closeButton.style.height =
+            "38px";
+
+
+        closeButton.style.border =
+            "none";
+
+
+        closeButton.style.borderRadius =
+            "50%";
+
+
+        closeButton.style.background =
+            "rgba(255,255,255,0.08)";
+
+
+        closeButton.style.color =
+            "white";
+
+
+        closeButton.style.fontSize =
+            "25px";
+
+
+        closeButton.style.cursor =
+            "pointer";
+
+    }
+
+
+    const modalTitle =
+        document.getElementById(
+            "jobModalTitle"
+        );
+
+
+    if (modalTitle) {
+
+        modalTitle.style.marginBottom =
+            "25px";
+
+
+        modalTitle.style.fontSize =
+            "28px";
+
+
+        modalTitle.style.background =
+            "linear-gradient(90deg,#38bdf8,#8b5cf6)";
+
+
+        modalTitle.style.webkitBackgroundClip =
+            "text";
+
+
+        modalTitle.style.backgroundClip =
+            "text";
+
+
+        modalTitle.style.color =
+            "transparent";
+
+    }
+
+
+    const groups =
+        modal.querySelectorAll(
+            ".job-form-group"
+        );
+
+
+    groups.forEach(
+        group => {
+
+            group.style.marginBottom =
+                "18px";
+
+        }
+    );
+
+
+    const labels =
+        modal.querySelectorAll(
+            ".job-form-group label"
+        );
+
+
+    labels.forEach(
+        label => {
+
+            label.style.display =
+                "block";
+
+
+            label.style.marginBottom =
+                "8px";
+
+
+            label.style.color =
+                "#38bdf8";
+
+
+            label.style.fontWeight =
+                "600";
+
+
+            label.style.fontSize =
+                "14px";
+
+        }
+    );
+
+
+    const inputs =
+        modal.querySelectorAll(
+            ".job-form-group input, .job-form-group textarea"
+        );
+
+
+    inputs.forEach(
+        input => {
+
+            input.style.width =
+                "100%";
+
+
+            input.style.padding =
+                "12px 14px";
+
+
+            input.style.border =
+                "1px solid rgba(255,255,255,0.12)";
+
+
+            input.style.borderRadius =
+                "10px";
+
+
+            input.style.background =
+                "rgba(255,255,255,0.06)";
+
+
+            input.style.color =
+                "white";
+
+
+            input.style.fontSize =
+                "14px";
+
+
+            input.style.boxSizing =
+                "border-box";
+
+
+            input.style.outline =
+                "none";
+
+        }
+    );
+
+
+    const textarea =
+        modal.querySelector(
+            "#jobDescription"
+        );
+
+
+    if (textarea) {
+
+        textarea.style.resize =
+            "vertical";
+
+
+        textarea.style.minHeight =
+            "120px";
+
+    }
+
+
+    const actions =
+        modal.querySelector(
+            ".job-form-actions"
+        );
+
+
+    if (actions) {
+
+        actions.style.display =
+            "flex";
+
+
+        actions.style.justifyContent =
+            "flex-end";
+
+
+        actions.style.gap =
+            "10px";
+
+
+        actions.style.marginTop =
+            "25px";
+
+    }
+
+
+    const saveButton =
+        modal.querySelector(
+            ".btn-save-job"
+        );
+
+
+    if (saveButton) {
+
+        saveButton.style.padding =
+            "12px 25px";
+
+
+        saveButton.style.border =
+            "none";
+
+
+        saveButton.style.borderRadius =
+            "9px";
+
+
+        saveButton.style.background =
+            "#22c55e";
+
+
+        saveButton.style.color =
+            "white";
+
+
+        saveButton.style.fontWeight =
+            "bold";
+
+
+        saveButton.style.cursor =
+            "pointer";
+
+    }
+
+
+    const cancelButton =
+        modal.querySelector(
+            ".btn-cancel-job"
+        );
+
+
+    if (cancelButton) {
+
+        cancelButton.style.padding =
+            "12px 25px";
+
+
+        cancelButton.style.border =
+            "none";
+
+
+        cancelButton.style.borderRadius =
+            "9px";
+
+
+        cancelButton.style.background =
+            "#475569";
+
+
+        cancelButton.style.color =
+            "white";
+
+
+        cancelButton.style.fontWeight =
+            "bold";
+
+
+        cancelButton.style.cursor =
+            "pointer";
+
+    }
+
+}
+
+
+// ============================================================
+// JOB MODAL FORM EVENT
+// ============================================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const jobForm =
+            document.getElementById(
+                "jobForm"
+            );
+
+
+        if (jobForm) {
+
+            jobForm.addEventListener(
+                "submit",
+                saveJob
+            );
+
+        }
+
+
+        const jobModal =
+            document.getElementById(
+                "jobModal"
+            );
+
+
+        if (jobModal) {
+
+            jobModal.addEventListener(
+                "click",
+                function (event) {
+
+                    if (
+                        event.target ===
+                        jobModal
+                    ) {
+
+                        closeJobModal();
+
+                    }
+
+                }
+            );
+
+        }
+
+    }
+);
+
+
+// ============================================================
+// CHECK ADMIN
+// ============================================================
+
+function checkAdmin() {
+
+    const token =
+        localStorage.getItem("token");
+
+
+    const role =
+        localStorage.getItem("role");
+
+
+    if (
+        !token ||
+        role !== "ADMIN"
+    ) {
+
+        redirectToLogin();
+
+        return false;
+
+    }
+
+
+    return true;
 
 }
 
@@ -2473,25 +3681,59 @@ function escapeHtml(
         );
 
 }
+
+
 // ============================================================
 // SUCCESS POPUP
 // ============================================================
 
-function showSuccessPopup(message) {
+function showSuccessPopup(
+    message
+) {
 
     const popup =
         document.createElement("div");
 
-    popup.style.position = "fixed";
-    popup.style.top = "0";
-    popup.style.left = "0";
-    popup.style.width = "100%";
-    popup.style.height = "100%";
-    popup.style.background = "rgba(0, 0, 0, 0.70)";
-    popup.style.display = "flex";
-    popup.style.justifyContent = "center";
-    popup.style.alignItems = "center";
-    popup.style.zIndex = "100000";
+
+    popup.style.position =
+        "fixed";
+
+
+    popup.style.top =
+        "0";
+
+
+    popup.style.left =
+        "0";
+
+
+    popup.style.width =
+        "100%";
+
+
+    popup.style.height =
+        "100%";
+
+
+    popup.style.background =
+        "rgba(0, 0, 0, 0.70)";
+
+
+    popup.style.display =
+        "flex";
+
+
+    popup.style.justifyContent =
+        "center";
+
+
+    popup.style.alignItems =
+        "center";
+
+
+    popup.style.zIndex =
+        "100000";
+
 
     popup.innerHTML = `
 
@@ -2518,23 +3760,32 @@ function showSuccessPopup(message) {
                 font-size:35px;
                 font-weight:bold;
             ">
+
                 ✓
+
             </div>
+
 
             <h2 style="
                 margin:0 0 12px 0;
                 color:#38bdf8;
             ">
+
                 Success
+
             </h2>
+
 
             <p style="
                 margin:0 0 25px 0;
                 color:#e2e8f0;
                 font-size:16px;
             ">
+
                 ${escapeHtml(message)}
+
             </p>
+
 
             <button
                 id="successPopupOk"
@@ -2549,23 +3800,29 @@ function showSuccessPopup(message) {
                     cursor:pointer;
                 "
             >
+
                 OK
+
             </button>
 
         </div>
 
     `;
 
-    document.body.appendChild(popup);
+
+    document.body.appendChild(
+        popup
+    );
 
 
     document.getElementById(
         "successPopupOk"
-    ).onclick = function () {
+    ).onclick =
+        function () {
 
-        popup.remove();
+            popup.remove();
 
-    };
+        };
 
 
     popup.addEventListener(
@@ -2584,156 +3841,220 @@ function showSuccessPopup(message) {
     );
 
 }
+
+
 // ============================================================
 // CUSTOM CONFIRMATION POPUP
 // ============================================================
 
-function showConfirmPopup(title, message) {
+function showConfirmPopup(
+    title,
+    message
+) {
 
-    return new Promise((resolve) => {
+    return new Promise(
+        (resolve) => {
 
-        const popup = document.createElement("div");
+            const popup =
+                document.createElement(
+                    "div"
+                );
 
-        popup.style.position = "fixed";
-        popup.style.top = "0";
-        popup.style.left = "0";
-        popup.style.width = "100%";
-        popup.style.height = "100%";
-        popup.style.background = "rgba(0, 0, 0, 0.70)";
-        popup.style.display = "flex";
-        popup.style.justifyContent = "center";
-        popup.style.alignItems = "center";
-        popup.style.zIndex = "100000";
 
-        popup.innerHTML = `
+            popup.style.position =
+                "fixed";
 
-            <div style="
-                width:420px;
-                max-width:90%;
-                background:#172033;
-                color:white;
-                padding:35px;
-                border-radius:18px;
-                text-align:center;
-                box-shadow:0 20px 60px rgba(0,0,0,0.6);
-                border:1px solid #38bdf8;
-            ">
 
-                <div style="
-                    width:65px;
-                    height:65px;
-                    margin:0 auto 20px auto;
-                    border-radius:50%;
-                    background:#a855f7;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    font-size:30px;
-                ">
-                    ?
-                </div>
+            popup.style.top =
+                "0";
 
-                <h2 style="
-                    margin:0 0 12px 0;
-                    color:#38bdf8;
-                    font-size:24px;
-                ">
-                    ${escapeHtml(title)}
-                </h2>
 
-                <p style="
-                    margin:0 0 28px 0;
-                    color:#e2e8f0;
-                    font-size:16px;
-                ">
-                    ${escapeHtml(message)}
-                </p>
+            popup.style.left =
+                "0";
+
+
+            popup.style.width =
+                "100%";
+
+
+            popup.style.height =
+                "100%";
+
+
+            popup.style.background =
+                "rgba(0, 0, 0, 0.70)";
+
+
+            popup.style.display =
+                "flex";
+
+
+            popup.style.justifyContent =
+                "center";
+
+
+            popup.style.alignItems =
+                "center";
+
+
+            popup.style.zIndex =
+                "100000";
+
+
+            popup.innerHTML = `
 
                 <div style="
-                    display:flex;
-                    justify-content:center;
-                    gap:15px;
+                    width:420px;
+                    max-width:90%;
+                    background:#172033;
+                    color:white;
+                    padding:35px;
+                    border-radius:18px;
+                    text-align:center;
+                    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+                    border:1px solid #38bdf8;
                 ">
 
-                    <button
-                        id="confirmCancelBtn"
-                        style="
-                            padding:12px 25px;
-                            border:none;
-                            border-radius:8px;
-                            background:#475569;
-                            color:white;
-                            font-size:15px;
-                            cursor:pointer;
-                        "
-                    >
-                        Cancel
-                    </button>
 
-                    <button
-                        id="confirmOkBtn"
-                        style="
-                            padding:12px 25px;
-                            border:none;
-                            border-radius:8px;
-                            background:#22c55e;
-                            color:white;
-                            font-size:15px;
-                            font-weight:bold;
-                            cursor:pointer;
-                        "
-                    >
-                        Confirm
-                    </button>
+                    <div style="
+                        width:65px;
+                        height:65px;
+                        margin:0 auto 20px auto;
+                        border-radius:50%;
+                        background:#a855f7;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-size:30px;
+                    ">
+
+                        ?
+
+                    </div>
+
+
+                    <h2 style="
+                        margin:0 0 12px 0;
+                        color:#38bdf8;
+                        font-size:24px;
+                    ">
+
+                        ${escapeHtml(title)}
+
+                    </h2>
+
+
+                    <p style="
+                        margin:0 0 28px 0;
+                        color:#e2e8f0;
+                        font-size:16px;
+                    ">
+
+                        ${escapeHtml(message)}
+
+                    </p>
+
+
+                    <div style="
+                        display:flex;
+                        justify-content:center;
+                        gap:15px;
+                    ">
+
+
+                        <button
+                            id="confirmCancelBtn"
+                            style="
+                                padding:12px 25px;
+                                border:none;
+                                border-radius:8px;
+                                background:#475569;
+                                color:white;
+                                font-size:15px;
+                                cursor:pointer;
+                            "
+                        >
+
+                            Cancel
+
+                        </button>
+
+
+                        <button
+                            id="confirmOkBtn"
+                            style="
+                                padding:12px 25px;
+                                border:none;
+                                border-radius:8px;
+                                background:#22c55e;
+                                color:white;
+                                font-size:15px;
+                                font-weight:bold;
+                                cursor:pointer;
+                            "
+                        >
+
+                            Confirm
+
+                        </button>
+
+
+                    </div>
+
 
                 </div>
 
-            </div>
+            `;
 
-        `;
 
-        document.body.appendChild(popup);
+            document.body.appendChild(
+                popup
+            );
 
- 
 
-        document.getElementById(
-            "confirmOkBtn"
-        ).onclick = function () {
+            document.getElementById(
+                "confirmOkBtn"
+            ).onclick =
+                function () {
 
-            popup.remove();
+                    popup.remove();
 
-            resolve(true);
+                    resolve(true);
 
-        };
+                };
 
- 
 
-        document.getElementById(
-            "confirmCancelBtn"
-        ).onclick = function () {
-
-            popup.remove();
-
-            resolve(false);
-
-        };
- 
-
-        popup.addEventListener(
-            "click",
-            function (event) {
-
-                if (event.target === popup) {
+            document.getElementById(
+                "confirmCancelBtn"
+            ).onclick =
+                function () {
 
                     popup.remove();
 
                     resolve(false);
 
+                };
+
+
+            popup.addEventListener(
+                "click",
+                function (event) {
+
+                    if (
+                        event.target ===
+                        popup
+                    ) {
+
+                        popup.remove();
+
+                        resolve(false);
+
+                    }
+
                 }
+            );
 
-            }
-        );
-
-    });
+        }
+    );
 
 }
