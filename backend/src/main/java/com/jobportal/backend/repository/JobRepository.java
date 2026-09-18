@@ -13,12 +13,16 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
     @Query("""
         SELECT j FROM Job j
-        WHERE (:title IS NULL OR 
-               LOWER(j.title) LIKE LOWER(CONCAT('%', :title, '%')) 
-               OR LOWER(j.description) LIKE LOWER(CONCAT('%', :title, '%')))
-        AND (:location IS NULL OR 
-             LOWER(j.location) LIKE LOWER(CONCAT('%', :location, '%')))
-        AND (:minSalary IS NULL OR j.salary >= :minSalary)
+        WHERE
+            LOWER(j.title) LIKE
+            CONCAT('%', LOWER(COALESCE(:title, '')), '%')
+
+        AND
+            LOWER(j.location) LIKE
+            CONCAT('%', LOWER(COALESCE(:location, '')), '%')
+
+        AND
+            (:minSalary IS NULL OR j.salary >= :minSalary)
     """)
     Page<Job> searchJobs(
             @Param("title") String title,

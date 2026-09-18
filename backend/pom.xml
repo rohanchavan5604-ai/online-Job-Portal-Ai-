@@ -94,6 +94,13 @@
     <version>3.0.5</version>
 </dependency>
 
+    <!-- OPENAI AI -->
+<dependency>
+    <groupId>com.openai</groupId>
+    <artifactId>openai-java</artifactId>
+    <version>4.63.1</version>
+</dependency>
+
     </dependencies>
 
     <build>

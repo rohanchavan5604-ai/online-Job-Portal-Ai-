@@ -17,12 +17,16 @@ public class JobServiceImpl implements JobService {
 
     private final JobRepository jobRepository;
     private final ApplicationRepository applicationRepository;
+    private final JobNotificationService jobNotificationService;
 
-    public JobServiceImpl(JobRepository jobRepository,
-                          ApplicationRepository applicationRepository) {
+    public JobServiceImpl(
+            JobRepository jobRepository,
+            ApplicationRepository applicationRepository,
+            JobNotificationService jobNotificationService) {
 
         this.jobRepository = jobRepository;
         this.applicationRepository = applicationRepository;
+        this.jobNotificationService = jobNotificationService;
     }
 
     // =========================
@@ -34,9 +38,16 @@ public class JobServiceImpl implements JobService {
 
         Job job = mapToEntity(jobDTO);
 
-        return mapToDTO(
-                jobRepository.save(job)
+        Job savedJob =
+                jobRepository.save(job);
+
+        // Process AI notifications
+        // for users with matching resumes
+        jobNotificationService.processNewJob(
+                savedJob
         );
+
+        return mapToDTO(savedJob);
     }
 
     // =========================
@@ -61,7 +72,9 @@ public class JobServiceImpl implements JobService {
 
         Job job = jobRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Job not found")
+                        new RuntimeException(
+                                "Job not found"
+                        )
                 );
 
         return mapToDTO(job);
@@ -72,18 +85,41 @@ public class JobServiceImpl implements JobService {
     // =========================
 
     @Override
-    public JobDTO updateJob(Long id, JobDTO jobDTO) {
+    public JobDTO updateJob(
+            Long id,
+            JobDTO jobDTO) {
 
-        Job existingJob = jobRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Job not found")
-                );
+        Job existingJob =
+                jobRepository.findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Job not found"
+                                )
+                        );
 
-        existingJob.setTitle(jobDTO.getTitle());
-        existingJob.setDescription(jobDTO.getDescription());
-        existingJob.setCompany(jobDTO.getCompany());
-        existingJob.setLocation(jobDTO.getLocation());
-        existingJob.setSalary(jobDTO.getSalary());
+        existingJob.setTitle(
+                jobDTO.getTitle()
+        );
+
+        existingJob.setDescription(
+                jobDTO.getDescription()
+        );
+
+        existingJob.setCompany(
+                jobDTO.getCompany()
+        );
+
+        existingJob.setLocation(
+                jobDTO.getLocation()
+        );
+
+        existingJob.setSalary(
+                jobDTO.getSalary()
+        );
+
+        existingJob.setRequiredSkills(
+                jobDTO.getRequiredSkills()
+        );
 
         return mapToDTO(
                 jobRepository.save(existingJob)
@@ -98,12 +134,17 @@ public class JobServiceImpl implements JobService {
     public void deleteJob(Long id) {
 
         // Step 1: Check job exists
-        Job job = jobRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Job not found")
-                );
 
-        // Step 2: Check whether applications exist
+        Job job =
+                jobRepository.findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Job not found"
+                                )
+                        );
+
+        // Step 2: Check applications
+
         if (applicationRepository.existsByJob(job)) {
 
             throw new RuntimeException(
@@ -112,6 +153,7 @@ public class JobServiceImpl implements JobService {
         }
 
         // Step 3: Delete job
+
         jobRepository.delete(job);
     }
 
@@ -126,11 +168,15 @@ public class JobServiceImpl implements JobService {
             Double minSalary,
             Pageable pageable) {
 
-        if (title != null && title.trim().isEmpty()) {
+        if (title != null &&
+                title.trim().isEmpty()) {
+
             title = null;
         }
 
-        if (location != null && location.trim().isEmpty()) {
+        if (location != null &&
+                location.trim().isEmpty()) {
+
             location = null;
         }
 
@@ -152,13 +198,37 @@ public class JobServiceImpl implements JobService {
 
         JobDTO dto = new JobDTO();
 
-        dto.setId(job.getId());
-        dto.setTitle(job.getTitle());
-        dto.setDescription(job.getDescription());
-        dto.setCompany(job.getCompany());
-        dto.setLocation(job.getLocation());
-        dto.setSalary(job.getSalary());
-        dto.setCreatedAt(job.getCreatedAt());
+        dto.setId(
+                job.getId()
+        );
+
+        dto.setTitle(
+                job.getTitle()
+        );
+
+        dto.setDescription(
+                job.getDescription()
+        );
+
+        dto.setCompany(
+                job.getCompany()
+        );
+
+        dto.setLocation(
+                job.getLocation()
+        );
+
+        dto.setSalary(
+                job.getSalary()
+        );
+
+        dto.setRequiredSkills(
+                job.getRequiredSkills()
+        );
+
+        dto.setCreatedAt(
+                job.getCreatedAt()
+        );
 
         return dto;
     }
@@ -171,11 +241,29 @@ public class JobServiceImpl implements JobService {
 
         Job job = new Job();
 
-        job.setTitle(dto.getTitle());
-        job.setDescription(dto.getDescription());
-        job.setCompany(dto.getCompany());
-        job.setLocation(dto.getLocation());
-        job.setSalary(dto.getSalary());
+        job.setTitle(
+                dto.getTitle()
+        );
+
+        job.setDescription(
+                dto.getDescription()
+        );
+
+        job.setCompany(
+                dto.getCompany()
+        );
+
+        job.setLocation(
+                dto.getLocation()
+        );
+
+        job.setSalary(
+                dto.getSalary()
+        );
+
+        job.setRequiredSkills(
+                dto.getRequiredSkills()
+        );
 
         return job;
     }

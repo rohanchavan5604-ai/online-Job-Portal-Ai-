@@ -26,6 +26,13 @@ public class Job {
     @Column
     private Double salary;
 
+    // =========================
+    // REQUIRED SKILLS
+    // =========================
+
+    @Column(name = "required_skills", columnDefinition = "TEXT")
+    private String requiredSkills;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -34,23 +41,67 @@ public class Job {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // =========================
+    // GETTERS AND SETTERS
+    // =========================
 
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getCompany() { return company; }
-    public void setCompany(String company) { this.company = company; }
+    public String getTitle() {
+        return title;
+    }
 
-    public String getLocation() { return location; }
-    public void setLocation(String location) { this.location = location; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-    public Double getSalary() { return salary; }
-    public void setSalary(Double salary) { this.salary = salary; }
+    public String getDescription() {
+        return description;
+    }
 
-    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
+    public String getRequiredSkills() {
+        return requiredSkills;
+    }
+
+    public void setRequiredSkills(String requiredSkills) {
+        this.requiredSkills = requiredSkills;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

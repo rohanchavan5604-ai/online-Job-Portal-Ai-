@@ -16,32 +16,113 @@
 
 <body>
 
-    <!-- ================= NAVBAR ================= -->
+<!-- ================= NAVBAR ================= -->
 
-    <div class="navbar">
+<div class="navbar">
 
-        <h2 class="logo">
-            Job Portal AI
-        </h2>
+    <h2 class="logo">
+        Job Portal AI
+    </h2>
 
-        <div class="nav-links">
+    <div class="nav-links">
 
-            <a href="profile.html">
-                Profile
-            </a>
+        <a href="profile.html">
+            Profile
+        </a>
 
-            <a href="#" onclick="goToMyApplications()">
-                My Applications
-            </a>
+        <a href="#" onclick="goToMyApplications()">
+            My Applications
+        </a>
 
-            <a href="#" onclick="logout()">
-                Logout
-            </a>
+
+        <!-- ================= NOTIFICATION ================= -->
+
+        <div class="notification-wrapper">
+
+            <button
+                class="notification-button"
+                onclick="toggleNotifications()">
+
+                🔔
+
+                <span
+                    id="notificationCount"
+                    class="notification-count">
+                    0
+                </span>
+
+            </button>
+
+
+            <!-- Notification Dropdown -->
+
+            <div
+                id="notificationDropdown"
+                class="notification-dropdown">
+
+                <div class="notification-header">
+
+                    <h3>
+                        Notifications
+                    </h3>
+
+                    <button
+                        onclick="markAllNotificationsRead()">
+
+                        Mark all as read
+
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="notificationList"
+                    class="notification-list">
+
+                    <p>
+                        Loading notifications...
+                    </p>
+
+                </div>
+
+            </div>
 
         </div>
 
+
+        <!-- ================= LOGOUT ================= -->
+
+        <a href="#" onclick="logout()">
+            Logout
+        </a>
+
     </div>
 
+</div>
+
+
+    <!-- ================= AI RECOMMENDATIONS ================= -->
+
+<section class="ai-recommendations">
+
+    <div class="ai-recommendation-header">
+
+        <h2>🤖 AI Recommended Jobs</h2>
+
+        <p>
+            Jobs matched with your resume using AI
+        </p>
+
+    </div>
+
+    <div id="recommendedJobsContainer">
+
+        <p>Loading AI recommendations...</p>
+
+    </div>
+
+</section>
 
     <!-- ================= JOB SEARCH ================= -->
 

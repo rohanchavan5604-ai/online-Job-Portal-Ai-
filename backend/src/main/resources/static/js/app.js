@@ -165,6 +165,313 @@ async function register() {
     }
 }
 
+/* =====================================================
+   AI RECOMMENDED JOBS
+===================================================== */
+
+async function loadRecommendedJobs() {
+
+    const container =
+        document.getElementById(
+            "recommendedJobsContainer"
+        );
+
+    if (!container) {
+        return;
+    }
+
+    const token =
+        localStorage.getItem("token");
+
+    if (!token) {
+
+        container.innerHTML = `
+            <p>
+                Please login to see AI recommendations.
+            </p>
+        `;
+
+        return;
+    }
+
+    container.innerHTML = `
+        <div class="ai-loading">
+            🤖 AI is analyzing your resume...
+        </div>
+    `;
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/job-matching/recommended",
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Authorization":
+                            "Bearer " + token
+                    }
+                }
+            );
+
+        if (
+            response.status === 401 ||
+            response.status === 403
+        ) {
+
+            container.innerHTML = `
+                <p>
+                    Please login again to view recommendations.
+                </p>
+            `;
+
+            return;
+        }
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Failed to load AI recommendations"
+            );
+
+        }
+
+        const recommendations =
+            await response.json();
+
+        container.innerHTML = "";
+
+        if (
+            !recommendations ||
+            recommendations.length === 0
+        ) {
+
+            container.innerHTML = `
+                <div class="no-ai-jobs">
+
+                    <h3>
+                        No AI recommendations available
+                    </h3>
+
+                    <p>
+                        Please upload your resume
+                        to get personalized job recommendations.
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        recommendations.forEach(job => {
+
+            const matchedSkills =
+                job.matchedSkills || [];
+
+            const missingSkills =
+                job.missingSkills || [];
+
+            const matchPercentage =
+                Number(
+                    job.matchPercentage || 0
+                ).toFixed(2);
+
+            const skillScore =
+                Number(
+                    job.skillScore || 0
+                ).toFixed(2);
+
+            const semanticScore =
+                Number(
+                    job.semanticScore || 0
+                ).toFixed(2);
+
+
+            const matchedSkillsHTML =
+                matchedSkills.length > 0
+
+                ? matchedSkills
+                    .map(skill => `
+                        <span class="skill matched-skill">
+                            ${escapeHtml(skill)}
+                        </span>
+                    `)
+                    .join("")
+
+                : `<span>No matched skills</span>`;
+
+
+            const missingSkillsHTML =
+                missingSkills.length > 0
+
+                ? missingSkills
+                    .map(skill => `
+                        <span class="skill missing-skill">
+                            ${escapeHtml(skill)}
+                        </span>
+                    `)
+                    .join("")
+
+                : `<span class="all-skills-matched">
+                        ✓ All required skills matched
+                   </span>`;
+
+
+            container.innerHTML += `
+
+                <div class="ai-job-card">
+
+                    <div class="ai-job-header">
+
+                        <div>
+
+                            <h3>
+                                ${escapeHtml(
+                                    job.title
+                                )}
+                            </h3>
+
+                            <p class="ai-company">
+
+                                ${escapeHtml(
+                                    job.company
+                                )}
+
+                            </p>
+
+                        </div>
+
+
+                        <div class="match-badge">
+
+                            ${matchPercentage}%
+
+                            <span>
+                                Match
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ai-score-section">
+
+                        <div class="score-item">
+
+                            <span>
+                                Skill Score
+                            </span>
+
+                            <strong>
+                                ${skillScore}%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="score-item">
+
+                            <span>
+                                Semantic Score
+                            </span>
+
+                            <strong>
+                                ${semanticScore}%
+                            </strong>
+
+                        </div>
+
+
+                        <div class="score-item">
+
+                            <span>
+                                AI Match
+                            </span>
+
+                            <strong>
+                                ${matchPercentage}%
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="skills-section">
+
+                        <h4>
+                            ✓ Matched Skills
+                        </h4>
+
+                        <div class="skills-list">
+
+                            ${matchedSkillsHTML}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="skills-section">
+
+                        <h4>
+                            ⚠ Missing Skills
+                        </h4>
+
+                        <div class="skills-list">
+
+                            ${missingSkillsHTML}
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        class="ai-apply-button"
+                        onclick="applyJob(${job.jobId})">
+
+                        Apply Now
+
+                    </button>
+
+                </div>
+
+            `;
+
+        });
+
+    }
+    catch (error) {
+
+        console.error(
+            "AI recommendation error:",
+            error
+        );
+
+        container.innerHTML = `
+            <div class="ai-error">
+
+                <p>
+                    Unable to load AI recommendations.
+                </p>
+
+                <button
+                    onclick="loadRecommendedJobs()">
+
+                    Try Again
+
+                </button>
+
+            </div>
+        `;
+
+    }
+}
 
 /* =====================================================
    LOAD JOBS
@@ -1332,18 +1639,373 @@ function escapeHtml(value) {
    PAGE LOAD
 ===================================================== */
 
-window.addEventListener(
-    "DOMContentLoaded",
-    () => {
+    window.addEventListener(
+        "DOMContentLoaded",
+        async () => {
 
-        loadJobs();
+            await loadJobs();
 
-        loadMyApplications();
+            loadMyApplications();
 
+            loadRecommendedJobs();
+
+            loadNotificationCount();
+
+        }
+    );
+
+// ================= NOTIFICATIONS =================
+
+async function loadNotificationCount() {
+
+    const countElement =
+        document.getElementById("notificationCount");
+
+    if (!countElement) {
+        return;
     }
-);
+
+    const token =
+        localStorage.getItem("token");
+
+    if (!token) {
+        countElement.style.display = "none";
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/notifications/unread/count",
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Authorization":
+                            "Bearer " + token
+                    }
+                }
+            );
+
+        if (!response.ok) {
+            countElement.style.display = "none";
+            return;
+        }
+
+        const count =
+            await response.json();
+
+        countElement.textContent = count;
+
+        if (count > 0) {
+
+            countElement.style.display =
+                "flex";
+
+        } else {
+
+            countElement.style.display =
+                "none";
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Notification count error:",
+            error
+        );
+
+        countElement.style.display = "none";
+    }
+}
 
 
+// ================= LOAD NOTIFICATIONS =================
+
+async function loadNotifications() {
+
+    const list =
+        document.getElementById(
+            "notificationList"
+        );
+
+    if (!list) {
+        return;
+    }
+
+    const token =
+        localStorage.getItem("token");
+
+    if (!token) {
+
+        list.innerHTML = `
+            <p>
+                Please login to view notifications.
+            </p>
+        `;
+
+        return;
+    }
+
+    list.innerHTML = `
+        <p>
+            Loading notifications...
+        </p>
+    `;
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/notifications",
+                {
+                    method: "GET",
+
+                    headers: {
+                        "Authorization":
+                            "Bearer " + token
+                    }
+                }
+            );
+
+        if (
+            response.status === 401 ||
+            response.status === 403
+        ) {
+
+            list.innerHTML = `
+                <p>
+                    Please login again.
+                </p>
+            `;
+
+            return;
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                "Failed to load notifications"
+            );
+        }
+
+        const notifications =
+            await response.json();
+
+        list.innerHTML = "";
+
+        if (
+            !notifications ||
+            notifications.length === 0
+        ) {
+
+            list.innerHTML = `
+                <div class="no-notifications">
+
+                    <p>
+                        🔔 No notifications
+                    </p>
+
+                </div>
+            `;
+
+            return;
+        }
+
+
+        notifications.forEach(
+            notification => {
+
+                const matchPercentage =
+                    Number(
+                        notification.matchPercentage || 0
+                    ).toFixed(2);
+
+                const unreadClass =
+                    notification.read
+                        ? ""
+                        : "unread-notification";
+
+                list.innerHTML += `
+
+                    <div
+                    class="notification-item ${unreadClass}"
+                    onclick="openJobFromNotification(
+                        ${notification.id},
+                        ${notification.jobId}
+                    )">
+
+                        <div class="notification-icon">
+                            🤖
+                        </div>
+
+                        <div class="notification-content">
+
+                            <h4>
+                                ${escapeHtml(
+                                    notification.jobTitle || "New Job"
+                                )}
+                            </h4>
+
+                            <p>
+                                ${escapeHtml(
+                                    notification.company || ""
+                                )}
+                            </p>
+
+                            <strong>
+                                ${matchPercentage}% AI Match
+                            </strong>
+
+                            <small>
+                                ${escapeHtml(
+                                    notification.message || ""
+                                )}
+                            </small>
+
+                        </div>
+
+                    </div>
+                `;
+            }
+        );
+
+    } catch (error) {
+
+        console.error(
+            "Notification loading error:",
+            error
+        );
+
+        list.innerHTML = `
+            <p>
+                Unable to load notifications.
+            </p>
+        `;
+    }
+}
+
+
+// ================= TOGGLE DROPDOWN =================
+
+function toggleNotifications() {
+
+    const dropdown =
+        document.getElementById(
+            "notificationDropdown"
+        );
+
+    if (!dropdown) {
+        return;
+    }
+
+    dropdown.classList.toggle(
+        "show-notifications"
+    );
+
+    if (
+        dropdown.classList.contains(
+            "show-notifications"
+        )
+    ) {
+
+        loadNotifications();
+    }
+}
+
+
+// ================= MARK ONE AS READ =================
+
+async function markNotificationAsRead(
+    notificationId
+) {
+
+    const token =
+        localStorage.getItem("token");
+
+    if (!token) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/notifications/${notificationId}/read`,
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Authorization":
+                            "Bearer " + token
+                    }
+                }
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                "Failed to mark notification as read"
+            );
+        }
+
+        await loadNotificationCount();
+
+        await loadNotifications();
+
+    } catch (error) {
+
+        console.error(
+            "Mark notification error:",
+            error
+        );
+    }
+}
+
+
+// ================= MARK ALL AS READ =================
+
+async function markAllNotificationsRead() {
+
+    const token =
+        localStorage.getItem("token");
+
+    if (!token) {
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/notifications/read-all",
+                {
+                    method: "PUT",
+
+                    headers: {
+                        "Authorization":
+                            "Bearer " + token
+                    }
+                }
+            );
+
+        if (!response.ok) {
+            throw new Error(
+                "Failed to mark all notifications as read"
+            );
+        }
+
+        await loadNotificationCount();
+
+        await loadNotifications();
+
+    } catch (error) {
+
+        console.error(
+            "Mark all notifications error:",
+            error
+        );
+    }
+}
 /* =====================================================
    INTERVIEW NOTIFICATION
 ===================================================== */
@@ -1720,4 +2382,119 @@ function showCustomModal(
     modal.classList.add(
         "show"
     );
+}// ================= OPEN JOB FROM NOTIFICATION =================
+
+async function openJobFromNotification(
+    notificationId,
+    jobId
+) {
+
+    const token =
+        localStorage.getItem("token");
+
+    if (!token) {
+        return;
+    }
+
+    try {
+
+        // Mark notification as read
+        await fetch(
+            `/api/notifications/${notificationId}/read`,
+            {
+                method: "PUT",
+
+                headers: {
+                    "Authorization":
+                        "Bearer " + token
+                }
+            }
+        );
+
+
+        // Update notification count
+        await loadNotificationCount();
+
+
+        // Close notification dropdown
+        const dropdown =
+            document.getElementById(
+                "notificationDropdown"
+            );
+
+        if (dropdown) {
+
+            dropdown.classList.remove(
+                "show-notifications"
+            );
+        }
+
+
+        // Get job details
+        const response =
+            await fetch(
+                `/api/jobs/${jobId}`
+            );
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Job not found"
+            );
+        }
+
+        const job =
+            await response.json();
+
+
+        // Put job title into search box
+        const searchTitle =
+            document.getElementById(
+                "searchTitle"
+            );
+
+        if (searchTitle) {
+
+            searchTitle.value =
+                job.title;
+        }
+
+
+        // Clear location filter
+        const searchLocation =
+            document.getElementById(
+                "searchLocation"
+            );
+
+        if (searchLocation) {
+
+            searchLocation.value = "";
+        }
+
+
+        // Search the selected job
+        await searchJobs();
+
+
+        // Scroll to jobs section
+        const jobsContainer =
+            document.getElementById(
+                "jobsContainer"
+            );
+
+        if (jobsContainer) {
+
+            jobsContainer.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Open notification job error:",
+            error
+        );
+    }
 }

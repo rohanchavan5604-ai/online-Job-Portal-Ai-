@@ -39,12 +39,22 @@ public class SecurityConfig {
 
         http
                 .csrf(csrf -> csrf.disable())
+
                 .cors(cors -> {})
+
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
                 )
+
                 .authenticationProvider(authenticationProvider)
+
                 .authorizeHttpRequests(auth -> auth
+
+                        // ==============================
+                        // PUBLIC FRONTEND PAGES
+                        // ==============================
 
                         .requestMatchers(
                                 "/",
@@ -60,64 +70,183 @@ public class SecurityConfig {
                                 "/js/**"
                         ).permitAll()
 
-                        .requestMatchers("/api/auth/**").permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/api/jobs/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/jobs/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/jobs/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/jobs/**").hasRole("ADMIN")
+                        // ==============================
+                        // AUTH APIs
+                        // ==============================
 
-                        .requestMatchers(HttpMethod.POST, "/api/applications/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.GET, "/api/applications/my").hasRole("USER")
+                        .requestMatchers(
+                                "/api/auth/**"
+                        ).permitAll()
 
-                        .requestMatchers(HttpMethod.GET, "/api/applications").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/applications/**").hasRole("ADMIN")
 
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        // ==============================
+                        // JOB APIs
+                        // ==============================
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/jobs/**"
+                        ).permitAll()
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/jobs/**"
+                        ).hasRole("ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/jobs/**"
+                        ).hasRole("ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/jobs/**"
+                        ).hasRole("ADMIN")
+
+
+                        // ==============================
+                        // APPLICATION APIs - USER
+                        // ==============================
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/applications/**"
+                        ).hasRole("USER")
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/applications/my"
+                        ).hasRole("USER")
+
+
+                        // ==============================
+                        // JOB MATCHING - USER
+                        // ==============================
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/job-matching/**"
+                        ).hasRole("USER")
+
+
+                        // ==============================
+                        // APPLICATION APIs - ADMIN
+                        // ==============================
+
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/applications"
+                        ).hasRole("ADMIN")
+
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/applications/**"
+                        ).hasRole("ADMIN")
+
+
+                        // ==============================
+                        // ADMIN APIs
+                        // ==============================
+
+                        .requestMatchers(
+                                "/api/admin/**"
+                        ).hasRole("ADMIN")
+
+
+                        // ==============================
+                        // EVERYTHING ELSE
+                        // ==============================
 
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+
+                .addFilterBefore(
+                        jwtAuthFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }
+
+
+    // ==========================================
+    // AUTHENTICATION PROVIDER
+    // ==========================================
 
     @Bean
     public AuthenticationProvider authenticationProvider(
             UserDetailsService userDetailsService,
             PasswordEncoder passwordEncoder) {
 
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder);
+        DaoAuthenticationProvider provider =
+                new DaoAuthenticationProvider();
+
+        provider.setUserDetailsService(
+                userDetailsService
+        );
+
+        provider.setPasswordEncoder(
+                passwordEncoder
+        );
+
         return provider;
     }
 
+
+    // ==========================================
+    // PASSWORD ENCODER
+    // ==========================================
+
     @Bean
     public PasswordEncoder passwordEncoder() {
+
         return new BCryptPasswordEncoder();
     }
 
+
+    // ==========================================
+    // AUTHENTICATION MANAGER
+    // ==========================================
+
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration configuration) throws Exception {
+            AuthenticationConfiguration configuration)
+            throws Exception {
+
         return configuration.getAuthenticationManager();
     }
+
+
+    // ==========================================
+    // CORS CONFIGURATION
+    // ==========================================
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
-        CorsConfiguration configuration = new CorsConfiguration();
+        CorsConfiguration configuration =
+                new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(List.of("*"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedOrigins(
+                List.of("*")
+        );
+
+        configuration.setAllowedMethods(
+                List.of("*")
+        );
+
+        configuration.setAllowedHeaders(
+                List.of("*")
+        );
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
 
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration(
+                "/**",
+                configuration
+        );
 
         return source;
     }

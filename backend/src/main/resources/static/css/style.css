@@ -957,3 +957,1005 @@ cursor:pointer;
     box-shadow:
         0 12px 25px rgba(79, 70, 229, 0.45);
 }
+/* =====================================================
+   AI RECOMMENDED JOBS
+===================================================== */
+
+.ai-recommendations {
+    width: 90%;
+    max-width: 1200px;
+    margin: 35px auto 50px auto;
+    padding: 30px;
+    box-sizing: border-box;
+
+    background: linear-gradient(
+        135deg,
+        #111827,
+        #172554
+    );
+
+    border: 1px solid #2563eb;
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 35px rgba(0, 0, 0, 0.35);
+}
+
+
+/* HEADER */
+
+.ai-recommendation-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.ai-recommendation-header h2 {
+    margin: 0;
+
+    font-size: 30px;
+
+    background: linear-gradient(
+        90deg,
+        #38bdf8,
+        #818cf8
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.ai-recommendation-header p {
+    margin-top: 8px;
+
+    color: #cbd5e1;
+
+    font-size: 15px;
+}
+
+
+/* JOB GRID */
+
+#recommendedJobsContainer {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 20px;
+}
+
+
+/* AI JOB CARD */
+
+.ai-job-card {
+    background: #1e293b;
+
+    border: 1px solid #334155;
+
+    border-radius: 16px;
+
+    padding: 22px;
+
+    box-sizing: border-box;
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.ai-job-card:hover {
+    transform: translateY(-4px);
+
+    border-color: #38bdf8;
+
+    box-shadow:
+        0 12px 30px rgba(56, 189, 248, 0.15);
+}
+
+
+/* JOB HEADER */
+
+.ai-job-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.ai-job-header h3 {
+    margin: 0 0 7px 0;
+
+    color: #38bdf8;
+
+    font-size: 20px;
+
+    line-height: 1.3;
+}
+
+.ai-company {
+    margin: 0;
+
+    color: #cbd5e1;
+
+    font-size: 14px;
+}
+
+
+/* MATCH BADGE */
+
+.match-badge {
+    min-width: 72px;
+
+    padding: 10px 8px;
+
+    text-align: center;
+
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #7c3aed
+    );
+
+    color: white;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 5px 18px rgba(79, 70, 229, 0.35);
+}
+
+.match-badge span {
+    display: block;
+
+    margin-top: 2px;
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+    opacity: 0.9;
+}
+
+
+/* SCORE SECTION */
+
+.ai-score-section {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.score-item {
+    padding: 12px 8px;
+
+    text-align: center;
+
+    background: #0f172a;
+
+    border: 1px solid #334155;
+
+    border-radius: 10px;
+}
+
+.score-item span {
+    display: block;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    margin-bottom: 5px;
+}
+
+.score-item strong {
+    color: #e2e8f0;
+
+    font-size: 15px;
+}
+
+
+/* SKILLS */
+
+.skills-section {
+    margin-top: 15px;
+}
+
+.skills-section h4 {
+    margin: 0 0 10px 0;
+
+    color: #e2e8f0;
+
+    font-size: 14px;
+}
+
+.skills-list {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 7px;
+}
+
+.skill {
+    display: inline-block;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+.matched-skill {
+    background: rgba(34, 197, 94, 0.12);
+
+    border: 1px solid #22c55e;
+
+    color: #86efac;
+}
+
+.missing-skill {
+    background: rgba(239, 68, 68, 0.12);
+
+    border: 1px solid #ef4444;
+
+    color: #fca5a5;
+}
+
+.all-skills-matched {
+    color: #86efac;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+/* APPLY BUTTON */
+
+.ai-apply-button {
+    width: 100%;
+
+    margin-top: 20px;
+
+    padding: 11px 18px;
+
+    border: none;
+
+    border-radius: 25px;
+
+    background: linear-gradient(
+        90deg,
+        #38bdf8,
+        #7c3aed
+    );
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.ai-apply-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(124, 58, 237, 0.35);
+}
+
+
+/* LOADING */
+
+.ai-loading {
+    text-align: center;
+
+    padding: 25px;
+
+    color: #38bdf8;
+
+    font-size: 15px;
+}
+
+
+/* NO JOBS / ERROR */
+
+.no-ai-jobs,
+.ai-error {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 25px;
+
+    color: #cbd5e1;
+}
+
+.ai-error button {
+    margin-top: 10px;
+
+    padding: 9px 18px;
+
+    border: none;
+
+    border-radius: 20px;
+
+    background: #4f46e5;
+
+    color: white;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 800px) {
+
+    .ai-recommendations {
+        width: 94%;
+
+        padding: 20px;
+    }
+
+    #recommendedJobsContainer {
+        grid-template-columns: 1fr;
+    }
+
+    .ai-score-section {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 500px) {
+
+    .ai-recommendation-header h2 {
+        font-size: 24px;
+    }
+
+    .ai-job-header {
+        flex-direction: column;
+    }
+
+    .match-badge {
+        align-self: flex-start;
+    }
+
+}/* =====================================================
+   AI RECOMMENDATION - COMPACT LAYOUT FIX
+===================================================== */
+
+.ai-recommendations {
+    width: 80%;
+    max-width: 1150px;
+
+    margin: 35px auto 30px auto;
+
+    padding: 22px 25px;
+
+    box-sizing: border-box;
+
+    min-height: 0;
+}
+
+
+/* AI HEADER */
+
+.ai-recommendation-header {
+    margin-bottom: 18px;
+}
+
+.ai-recommendation-header h2 {
+    font-size: 26px;
+    margin: 0;
+}
+
+.ai-recommendation-header p {
+    margin: 5px 0 0 0;
+    font-size: 14px;
+}
+
+
+/* JOB GRID */
+
+#recommendedJobsContainer {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 16px;
+}
+
+
+/* COMPACT CARD */
+
+.ai-job-card {
+    padding: 18px;
+
+    border-radius: 14px;
+}
+
+
+/* HEADER */
+
+.ai-job-header {
+    margin-bottom: 14px;
+}
+
+.ai-job-header h3 {
+    font-size: 18px;
+}
+
+
+/* SCORES */
+
+.ai-score-section {
+    margin-bottom: 14px;
+}
+
+.score-item {
+    padding: 9px 6px;
+}
+
+.score-item span {
+    font-size: 10px;
+}
+
+.score-item strong {
+    font-size: 14px;
+}
+
+
+/* SKILLS */
+
+.skills-section {
+    margin-top: 10px;
+}
+
+.skills-section h4 {
+    font-size: 13px;
+    margin-bottom: 7px;
+}
+
+
+/* APPLY */
+
+.ai-apply-button {
+    margin-top: 14px;
+    padding: 9px 15px;
+}
+
+
+/* =====================================================
+   AVOID NAVBAR OVERLAP
+===================================================== */
+
+.job-search {
+    margin-top: 20px;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 800px) {
+
+    .ai-recommendations {
+        width: 94%;
+        padding: 18px;
+    }
+
+    #recommendedJobsContainer {
+        grid-template-columns: 1fr;
+    }
+
+}/* =====================================================
+   FINAL AI SECTION POSITION FIX
+===================================================== */
+
+.ai-recommendations {
+    position: relative;
+    z-index: 1;
+
+    width: 80%;
+    max-width: 1150px;
+
+    margin: 110px auto 35px auto !important;
+
+    padding: 25px !important;
+
+    box-sizing: border-box;
+}
+
+
+/* AI TITLE */
+
+.ai-recommendation-header {
+    position: relative;
+
+    text-align: center;
+
+    margin-bottom: 20px;
+}
+
+.ai-recommendation-header h2 {
+    margin: 0 0 8px 0;
+
+    font-size: 28px;
+
+    line-height: 1.3;
+}
+
+.ai-recommendation-header p {
+    margin: 0;
+
+    font-size: 14px;
+}
+
+
+/* AI CARDS */
+
+#recommendedJobsContainer {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 18px;
+}
+
+
+/* CARD */
+
+.ai-job-card {
+    min-width: 0;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+    overflow: hidden;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 800px) {
+
+    .ai-recommendations {
+        width: 94%;
+        margin-top: 100px !important;
+    }
+
+    #recommendedJobsContainer {
+        grid-template-columns: 1fr;
+    }
+
+}/* =====================================================
+   NOTIFICATION SYSTEM
+   ===================================================== */
+
+.notification-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+
+/* ================= NOTIFICATION BUTTON ================= */
+
+.notification-button {
+    position: relative;
+
+    width: 54px;
+    height: 44px;
+
+    border: 1px solid #247ba0;
+    border-radius: 25px;
+
+    background: rgba(15, 25, 45, 0.9);
+
+    color: white;
+
+    font-size: 18px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: all 0.3s ease;
+}
+
+.notification-button:hover {
+    transform: translateY(-2px);
+
+    border-color: #4facfe;
+
+    box-shadow:
+        0 0 18px rgba(79, 172, 254, 0.35);
+}
+
+
+/* ================= UNREAD COUNT ================= */
+
+.notification-count {
+    position: absolute;
+
+    top: -6px;
+    right: -5px;
+
+    min-width: 20px;
+    height: 20px;
+
+    padding: 0 5px;
+
+    border-radius: 50%;
+
+    background: #ff4d6d;
+
+    color: white;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow:
+        0 0 10px rgba(255, 77, 109, 0.5);
+}
+
+
+/* ================= DROPDOWN ================= */
+
+.notification-dropdown {
+    position: absolute;
+
+    top: 55px;
+    right: 0;
+
+    width: 390px;
+    max-height: 500px;
+
+    overflow-y: auto;
+
+    background: #111a2e;
+
+    border: 1px solid #28466f;
+
+    border-radius: 16px;
+
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.45);
+
+    padding: 15px;
+
+    z-index: 9999;
+
+    display: none;
+}
+
+
+/* JavaScript adds this class */
+
+.notification-dropdown.show-notifications {
+    display: block;
+
+    animation:
+        notificationDropdownAnimation
+        0.2s ease;
+}
+
+
+@keyframes notificationDropdownAnimation {
+
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* ================= HEADER ================= */
+
+.notification-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 1px solid #263858;
+
+    margin-bottom: 10px;
+}
+
+
+.notification-header h3 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 18px;
+}
+
+
+.notification-header button {
+    border: none;
+
+    background: transparent;
+
+    color: #58b7ff;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    padding: 5px;
+}
+
+
+.notification-header button:hover {
+    color: #8bd0ff;
+}
+
+
+/* ================= NOTIFICATION LIST ================= */
+
+.notification-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+/* ================= NOTIFICATION ITEM ================= */
+
+.notification-item {
+    display: flex;
+
+    gap: 12px;
+
+    padding: 13px;
+
+    border-radius: 12px;
+
+    background: #18243a;
+
+    border: 1px solid #263b5c;
+
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+
+.notification-item:hover {
+    transform: translateY(-2px);
+
+    border-color: #3e8ed0;
+
+    background: #1c2b45;
+}
+
+
+/* ================= UNREAD ================= */
+
+.notification-item.unread-notification {
+    border-color: #347fc4;
+
+    background:
+        linear-gradient(
+            135deg,
+            #182c49,
+            #18243a
+        );
+
+    box-shadow:
+        inset 3px 0 0 #4facfe;
+}
+
+
+/* ================= ICON ================= */
+
+.notification-icon {
+    width: 38px;
+    height: 38px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #202f49;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
+}
+
+
+/* ================= CONTENT ================= */
+
+.notification-content {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.notification-content h4 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 14px;
+
+    line-height: 1.3;
+}
+
+
+.notification-content p {
+    margin: 0;
+
+    color: #9eb1ca;
+
+    font-size: 12px;
+}
+
+
+.notification-content strong {
+    color: #4facfe;
+
+    font-size: 13px;
+
+    margin-top: 2px;
+}
+
+
+.notification-content small {
+    color: #8295b0;
+
+    font-size: 11px;
+
+    line-height: 1.4;
+
+    word-break: break-word;
+}
+
+
+/* ================= EMPTY STATE ================= */
+
+.no-notifications {
+    text-align: center;
+
+    padding: 30px 15px;
+
+    color: #9eb1ca;
+}
+
+
+.no-notifications p {
+    margin: 0;
+
+    font-size: 14px;
+}
+
+
+/* ================= LOADING ================= */
+
+.notification-list > p {
+    color: #9eb1ca;
+
+    text-align: center;
+
+    padding: 20px 10px;
+
+    margin: 0;
+
+    font-size: 13px;
+}
+
+
+/* ================= SCROLLBAR ================= */
+
+.notification-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notification-dropdown::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb {
+    background: #315277;
+
+    border-radius: 10px;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 600px) {
+
+    .notification-dropdown {
+        position: fixed;
+
+        top: 75px;
+        left: 10px;
+        right: 10px;
+
+        width: auto;
+
+        max-height: 70vh;
+    }
+
+    .notification-header h3 {
+        font-size: 16px;
+    }
+
+    .notification-item {
+        padding: 11px;
+    }
+
+} 
+
+.navbar {
+    overflow: visible !important;
+}
+
+.notification-wrapper {
+    position: relative;
+    z-index: 10000;
+}
+
+.notification-dropdown {
+    z-index: 10001;
+}

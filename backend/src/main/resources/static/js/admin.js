@@ -2305,6 +2305,10 @@ function openJobModal() {
             "jobSalary"
         );
 
+    const jobRequiredSkills =
+    document.getElementById(
+        "jobRequiredSkills"
+    );
 
     if (!modal) {
 
@@ -2372,7 +2376,11 @@ function openJobModal() {
         jobSalary.value = "";
 
     }
+    if (jobRequiredSkills) {
 
+    jobRequiredSkills.value = "";
+
+    }
 
     applyJobModalStyles();
 
@@ -2510,7 +2518,10 @@ async function editJob(
             document.getElementById(
                 "jobSalary"
             );
-
+        const jobRequiredSkills =
+        document.getElementById(
+        "jobRequiredSkills"
+    );
 
         if (!modal) {
 
@@ -2577,7 +2588,12 @@ async function editJob(
                 job.salary ?? "";
 
         }
+        if (jobRequiredSkills) {
 
+    jobRequiredSkills.value =
+        job.requiredSkills ?? "";
+
+    }
 
         applyJobModalStyles();
 
@@ -2656,7 +2672,10 @@ async function saveJob(
         document.getElementById(
             "jobLocation"
         ).value.trim();
-
+    const requiredSkills =
+    document.getElementById(
+        "jobRequiredSkills"
+    ).value.trim();
 
     const salaryValue =
         document.getElementById(
@@ -2737,20 +2756,23 @@ async function saveJob(
 
     const jobData = {
 
-        title:
-            title,
+    title:
+        title,
 
-        description:
-            description,
+    description:
+        description,
 
-        company:
-            company,
+    company:
+        company,
 
-        location:
-            location,
+    location:
+        location,
 
-        salary:
-            salary
+    salary:
+        salary,
+
+    requiredSkills:
+        requiredSkills
 
     };
 
