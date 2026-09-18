@@ -1,101 +1,96 @@
 # 🚀 Online Job Portal with AI Skill Matching
 
-A Full Stack Job Portal built using Spring Boot (Backend) and React (Frontend).  
-The system uses AI-based skill matching to connect candidates with relevant job opportunities.
+A full-stack **Online Job Portal with AI Skill Matching** built using **Java, Spring Boot, Spring Security, PostgreSQL, HTML, CSS and JavaScript**.
+
+The system uses AI-based skill matching and semantic similarity to connect candidates with relevant job opportunities based on their resumes and skills.
 
 ---
 
 ## 📌 Features
 
-- 🔐 JWT Authentication
-- 👤 User Registration & Login
-- 🛡 Role-Based Authorization (ADMIN / USER)
-- 📄 Protected APIs using Spring Security
-- 🏢 Job Management Module (CRUD)
-- 🧠 AI Skill Matching (Coming Soon)
+### 🔐 Authentication & Security
 
----
+- JWT Authentication
+- User Registration & Login
+- Role-Based Authorization (ADMIN / USER)
+- Spring Security
+- BCrypt Password Encryption
+- Protected REST APIs
+- Stateless Authentication
+- CORS Configuration
 
-## 🛠 Tech Stack
+### 👤 User Module
 
-### Backend
-- Java 17
-- Spring Boot
-- Spring Security (JWT)
-- JPA / Hibernate
-- PostgreSQL
-- Maven
-
-### Frontend (Planned)
-- React
-- Axios
-
-### AI & Search (Planned)
-- Elasticsearch
-- Custom Skill Matching Algorithm
-
----
-
-## 📂 Project Structure
-
-backend/
- ├── config/
- ├── controller/
- ├── dto/
- ├── entity/
- ├── repository/
- ├── service/
-
----
-
-## 🔐 Authentication Flow
-
-1. User registers
-2. User logs in
-3. JWT token generated
-4. Token required for protected APIs
-5. Role-based access enforced (ADMIN / USER)
- 
-
-## 📡 Available APIs
-
-### 🔓 Public APIs
-
-POST  /api/auth/register  
-POST  /api/auth/login  
-
-### 🔐 Protected APIs
-
-GET   /api/users  
-POST  /api/users (ADMIN only)  
-
-GET   /api/jobs  
-POST  /api/jobs (ADMIN only)  
-
----
- 
-## 📊 Current Status
-
-✅ JWT Authentication Completed  
-✅ Role-Based Security Completed  
-✅ User Module Completed  
-🚧 Job Module In Progress  
-🚧 AI Matching Coming Next  
-
----
-
-## 🎯 Future Improvements
-
-- Apply Job Feature
+- User Registration
+- User Login
+- User Profile
 - Resume Upload
-- AI-Based Job Recommendation
-- Admin Dashboard
-- Pagination & Filtering
-- Full React Frontend
+- Resume Management
+- PDF Resume Text Extraction
+- Automatic Skill Extraction
+
+### 💼 Job Management
+
+- View All Jobs
+- View Job Details
+- Create Job (ADMIN)
+- Update Job (ADMIN)
+- Delete Job (ADMIN)
+- Search Jobs by Title
+- Search Jobs by Location
+- Minimum Salary Filtering
+- Salary Sorting
+- Latest Jobs Sorting
+- Pagination
+
+### 🧠 AI Skill Matching
+
+- Resume-based Skill Matching
+- Job Skill Matching
+- Skill Match Percentage
+- Semantic Similarity Matching
+- Matched Skills Detection
+- Missing Skills Detection
+- AI-based Job Recommendations
+- Top Recommended Jobs
+
+### 📊 AI Matching Formula
+
+The final match score is calculated using:
+
+```text
+Final Match Score =
+(60% × Skill Score)
++
+(40% × Semantic Score)
 
 ---
 
 ## 👨‍💻 Author
 
-Rohan Arun Chavan  
-Java Full Stack Developer (In Progress 🚀)
+### Rohan Arun Chavan
+
+**Java Full Stack Developer | Spring Boot Developer | AI Enthusiast**
+
+I am a Java Full Stack Developer focused on building secure, scalable and intelligent web applications using Java, Spring Boot, PostgreSQL and AI technologies.
+
+### 🛠 Technical Skills
+
+- **Languages:** Java, Python, C, C++, SQL
+- **Backend:** Spring Boot, Spring Security, Spring Data JPA, REST APIs
+- **Database:** PostgreSQL, MySQL
+- **Frontend:** HTML, CSS, JavaScript
+- **AI:** Skill Matching, Semantic Search, Embeddings, Ollama
+- **Tools:** Git, GitHub, Maven, Postman, IntelliJ IDEA
+
+### 🚀 Project
+
+**Online Job Portal with AI Skill Matching**
+
+Built and developed by **Rohan Arun Chavan**.
+
+---
+
+⭐ If you find this project useful, consider giving it a star on GitHub.
+
+**© 2026 Rohan Arun Chavan. All Rights Reserved.**
